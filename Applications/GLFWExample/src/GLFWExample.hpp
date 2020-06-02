@@ -16,5 +16,9 @@ public:
     void run();
 
 private:
+    void moveCamera(float dt);
     void loadExampleScene();
+
+    LightCollection m_lights;
+    Camera m_camera;
 };

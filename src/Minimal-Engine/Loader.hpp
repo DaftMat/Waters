@@ -5,7 +5,7 @@
 #include <API.hpp>
 
 
-#include "Mesh.hpp"
+#include <Minimal-Engine/Geometry/Mesh.hpp>
 #include <spdlog/common.h>
 
 class ENGINE_API Loader {

@@ -5,7 +5,8 @@
 #include <API.hpp>
 
 #include <memory>
-#include <Minimal-Engine/Renderer.hpp>
+#include <Minimal-Engine/Renderers/Renderer.hpp>
+#include <Minimal-Engine/Loader.hpp>
 
 ///TODO: if you changed ENGINE_API macro, make sure you update it here.
 template <typename WindowType>
