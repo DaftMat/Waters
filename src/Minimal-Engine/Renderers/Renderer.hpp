@@ -9,6 +9,8 @@
 #include <Minimal-Engine/Renderables/Cameras/Camera.hpp>
 #include <Minimal-Engine/Renderables/StaticObjects/Terrain.hpp>
 #include <Minimal-Engine/Renderers/EntityRenderers/TerrainRenderer.hpp>
+#include <Minimal-Engine/Renderers/EntityRenderers/WaterRenderer.hpp>
+#include <Minimal-Engine/Renderables/StaticObjects/Water.hpp>
 
 class Renderer {
 public:
@@ -24,18 +26,29 @@ public:
 
     void addTerrain(const Terrain &terrain) { m_terrains.push_back(terrain); }
 
+    void addWater(const Water &water) { m_waters.push_back(water); }
+
     void resize(int width, int height);
 
     [[nodiscard]] int width() const { return m_width; }
 
     [[nodiscard]] int height() const { return m_height; }
 
+    [[nodiscard]] const TerrainRenderer &terrainRenderer() const { return *m_terrainRenderer; }
+
+    [[nodiscard]] const WaterRenderer &waterRenderer() const { return *m_waterRenderer; }
+
 private:
     static void initGL();
+    void clearGL() const;
+    static void enableClipDistance(int index = 0) { glEnable(GL_CLIP_DISTANCE0+index); }
+    static void disableClipDistance(int index = 0) { glDisable(GL_CLIP_DISTANCE0+index); }
 
-    TerrainRenderer m_terrainRenderer;
+    std::unique_ptr<TerrainRenderer> m_terrainRenderer{nullptr};
+    std::unique_ptr<WaterRenderer> m_waterRenderer{nullptr};
 
     std::vector<Terrain> m_terrains;
+    std::vector<Water> m_waters;
 
     int m_width, m_height;
     float m_near, m_far, m_fogDensity, m_fogGradient;

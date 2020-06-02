@@ -84,3 +84,9 @@ void Camera::processMouseMove(const glm::vec2 &mousePos) {
     };
     updateCameraVectors();
 }
+
+void Camera::flip() {
+    m_pitch = -m_pitch;
+    m_position.y = -m_position.y;
+    updateCameraVectors();
+}

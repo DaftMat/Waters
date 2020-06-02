@@ -192,7 +192,7 @@ void FrameBuffer::unbind(int width, int height) const {
     glViewport( 0, 0, width, height );
 }
 
-void FrameBuffer::resolve( int width, int height, int index ) {
+void FrameBuffer::resolve( int width, int height, int index ) const {
     if ( index < 0 ) index = 0;
     if ( index > m_num_color - 1 ) index = m_num_color - 1;
     glBindFramebuffer( GL_DRAW_FRAMEBUFFER, 0 );
@@ -212,7 +212,7 @@ void FrameBuffer::resolve( int width, int height, int index ) {
     glBindFramebuffer( GL_FRAMEBUFFER, 0 );
 }
 
-void FrameBuffer::resolve( FrameBuffer& frameBuffer, int index ) {
+void FrameBuffer::resolve( FrameBuffer& frameBuffer, int index ) const {
     if ( index < 0 ) index = 0;
     if ( index > m_num_color - 1 ) index = m_num_color - 1;
     glBindFramebuffer( GL_DRAW_FRAMEBUFFER, frameBuffer.m_fbo );

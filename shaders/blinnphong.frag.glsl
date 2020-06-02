@@ -37,6 +37,7 @@ struct WaterMaterial {
     sampler2D refractionTex;
     float reflectivity;
     float shininess;
+    float tileFactor;
 };
 
 struct PointLight {
@@ -73,6 +74,7 @@ in vec2 fragTex;
 
 in vec3 toCamera;
 in float visibility;
+in vec4 clipSpace;
 
 uniform PointLight pointLights[MAX_LIGHTS];
 uniform DirectLight directLights[MAX_LIGHTS];
@@ -108,9 +110,9 @@ void main() {
     } else if (entityType == TERRAIN_T) {
         mat = getGenericMat(terrainMat);
     } else if (entityType == WATER_T) {
-        //mat = getGenericMat(waterMat);
-        //resultColor = mat.albedo.rgb;
-        //mat.albedo = vec4(vec3(0.0), 1.0); // add only specular color with shade functions to water.
+        mat = getGenericMat(waterMat);
+        resultColor = mat.albedo.rgb;
+        mat.albedo = vec4(vec3(0.0), 1.0); // add only specular color with shade functions to water.
     }
 
     for (int i = 0 ; i < numPointLights ; ++i) {
@@ -126,10 +128,13 @@ void main() {
     }
 
     // ambient + gamma
-    vec3 ambient = vec3(0.03) * mat.albedo.rgb;
-    vec3 color = ambient + resultColor;
-    color = color / (color + vec3(1.0));
-    color = pow(color, vec3(1.0/2.2));
+    vec3 color = resultColor;
+    if (entityType != WATER_T) {
+        vec3 ambient = vec3(0.03) * mat.albedo.rgb;
+        color += ambient;
+        color = color / (color + vec3(1.0));
+        color = pow(color, vec3(1.0/2.2));
+    }
     fragColor = vec4(color, 1.0);
     // fog
     fragColor = mix(vec4(skyColor, 1.0), fragColor, visibility);
@@ -212,5 +217,24 @@ GenericMaterial getGenericMat(TerrainMaterial mat) {
     ret.albedo = black + red + green + blue;
     **/
 
+    return ret;
+}
+
+GenericMaterial getGenericMat(WaterMaterial mat) {
+    GenericMaterial ret;
+    ret.shininess = mat.shininess;
+    ret.reflectivity = mat.reflectivity;
+    ret.specular = vec4(vec3(0.8), 1.0);
+
+    vec2 ndc = (clipSpace.xy / clipSpace.w) * 0.5 + 0.5;
+    vec2 refracCoords = ndc;
+    vec2 reflecCoords = vec2(ndc.x, -ndc.y);
+
+    vec4 reflection = texture(mat.reflectionTex, reflecCoords);
+    vec4 refraction = texture(mat.refractionTex, refracCoords);
+
+    float coef = dot(normalize(toCamera), normalize(fragNormal));
+
+    ret.albedo = mix(reflection, refraction, coef);
     return ret;
 }

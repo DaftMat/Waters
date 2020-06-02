@@ -42,6 +42,8 @@ class EntityRenderer
         m_shaderProgram->setVec3( "skyColor", skyColor );
     }
 
+    void setClipPlane(const glm::vec4 &plane) const { m_shaderProgram->setVec4("clipPlane", plane); }
+
     void unbind() const { m_shaderProgram->stop(); }
 
     void setShader( const char* vertex, const char* fragment );

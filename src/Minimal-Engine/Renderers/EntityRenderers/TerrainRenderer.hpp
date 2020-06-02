@@ -15,7 +15,6 @@
 class TerrainRenderer : public EntityRenderer
 {
   public:
-    TerrainRenderer() = default;
     explicit TerrainRenderer( StaticShader* shaderProgram ) : EntityRenderer( shaderProgram ) {}
 
     void render( const std::vector<Terrain>& terrains, const LightCollection& lights );

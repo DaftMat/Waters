@@ -88,6 +88,8 @@ class ENGINE_API Camera
      */
     void processMouseMove( const glm::vec2 &mousePos );
 
+    void flip();
+
   private:
     void updateCameraVectors();
 

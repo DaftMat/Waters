@@ -9,21 +9,28 @@ out vec2 fragTex;
 
 out vec3 toCamera;
 out float visibility;
+out vec4 clipSpace;
 
 uniform mat4 model;
 uniform mat4 view;
 uniform mat4 projection;
 
+uniform vec4 clipPlane;
+
 uniform float fog_density;
 uniform float fog_gradient;
 
 void main() {
-    fragPos = vec3(model * vec4(aPos, 1.0)).xyz;
+    vec4 worldPos = model * vec4(aPos, 1.0);
+    gl_ClipDistance[0] = dot(worldPos, clipPlane);
+
+    fragPos = worldPos.xyz;
     fragNormal = mat3(transpose(inverse(model))) * aNormal;
     fragTex = aTex;
 
     vec4 positionRelativeToCam = view * vec4(fragPos, 1.0);
-    gl_Position = projection * positionRelativeToCam;
+    clipSpace = projection * positionRelativeToCam;
+    gl_Position = clipSpace;
     toCamera = (inverse(view) * vec4(vec3(0.0), 1.0)).xyz - fragPos.xyz;
 
     float dist = length(positionRelativeToCam.xyz);

@@ -32,6 +32,8 @@ public:
 
     [[nodiscard]] const Material &material() const { return m_material; };
 
+    Material &material() { return m_material; };
+
 protected:
     Mesh m_mesh;
     Material m_material;

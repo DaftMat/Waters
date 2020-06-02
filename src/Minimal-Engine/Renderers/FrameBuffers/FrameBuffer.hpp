@@ -21,9 +21,9 @@ class FrameBuffer
      */
     void unbind(int width, int height) const;
 
-    const std::vector<GLuint>& textures() { return m_textures; }
+    [[nodiscard]] const std::vector<GLuint>& textures() const { return m_textures; }
 
-    const std::vector<GLuint>& buffers() { return m_buffers; }
+    [[nodiscard]] const std::vector<GLuint>& buffers() const { return m_buffers; }
 
     /** Resolves one fbo's color buffer to the screen's fbo.
      *
@@ -31,14 +31,14 @@ class FrameBuffer
      * @param height - screen height.
      * @param index - index of the color buffer to resolve.
      */
-    void resolve( int width, int height, int index = 0 );
+    void resolve( int width, int height, int index = 0 ) const;
 
     /** Resolves one fbo's color buffer to another fbo.
      *
      * @param frameBuffer - other fbo.
      * @param index - index of the color buffer to resolve.
      */
-    void resolve( FrameBuffer& frameBuffer, int index = 0 );
+    void resolve( FrameBuffer& frameBuffer, int index = 0 ) const;
 
   protected:
     void addColorBuffer();

@@ -22,5 +22,4 @@ private:
 
     LightCollection m_lights;
     Camera m_camera;
-    std::unique_ptr<FBO> m_fbo {nullptr}, m_screenFbo {nullptr};
 };
