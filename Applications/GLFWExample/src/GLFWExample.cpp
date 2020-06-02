@@ -39,30 +39,11 @@ void GLFWExample::moveCamera(float dt) {
 
 void GLFWExample::loadExampleScene() {
     APP_INFO("Loading example scene...");
-    //std::vector<Mesh::Vertex> vertices;
-    //std::vector<GLuint> indices{ 0, 2, 3, 0, 1, 2 };
-    //Mesh::Vertex vertex{};
-    //vertex.texCoords = { 0.f, 0.f };
-    //vertex.normal    = { 1.f, 1.f, 1.f };
-    //vertex.position  = { -0.5f, -0.5f, 0.5f };
-    //vertices.push_back( vertex );
-    //vertex.texCoords = { 1.f, 0.f };
-    //vertex.normal    = { 1.f, 0.f, 0.f };
-    //vertex.position  = { 0.5f, -0.5f, 0.f };
-    //vertices.push_back( vertex );
-    //vertex.texCoords = { 1.f, 1.f };
-    //vertex.normal    = { 0.f, 1.f, 0.f };
-    //vertex.position  = { 0.5f, 0.5f, 0.f };
-    //vertices.push_back( vertex );
-    //vertex.texCoords = { 0.f, 1.f };
-    //vertex.normal    = { 0.f, 0.f, 1.f };
-    //vertex.position  = { -0.5f, 0.5f, 0.f };
-    //vertices.push_back( vertex );
-    m_renderer->addTerrain(Terrain(HeightMap(Noise::generate(128, 12, 0.5f, 2.f, 0.f, Perlin(512)), [](float h){
-        return (h - 0.5f) * 2.f;
+    m_renderer->addTerrain(Terrain(HeightMap(Noise::generate(512, 7, 0.4f, 2.f, 0.f, Perlin(1024)), [](float h){
+        return 4.f * (h - 0.5f) * 2.f + 1.f;
     })));
+    m_renderer->addTerrain(Terrain(128));
     m_lights.addLight(DirectLight({-0.1f, -1.f, 0.f}));
-    //m_renderer->addMesh(vertices, indices);
     APP_INFO("Example scene loaded");
 }
 
