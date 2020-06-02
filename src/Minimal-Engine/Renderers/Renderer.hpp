@@ -26,6 +26,10 @@ public:
 
     void resize(int width, int height);
 
+    [[nodiscard]] int width() const { return m_width; }
+
+    [[nodiscard]] int height() const { return m_height; }
+
 private:
     static void initGL();
 

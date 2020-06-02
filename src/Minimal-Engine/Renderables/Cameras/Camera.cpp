@@ -65,10 +65,6 @@ void Camera::updateCameraVectors() {
 
 void Camera::processMouseMove(const glm::vec2 &mousePos) {
     if (!m_mousePressed) return;
-    if (m_firstMouseMove) {
-        m_mousePosition = mousePos;
-        m_firstMouseMove = false;
-    }
     auto mouseOffset = mousePos - m_mousePosition;
     m_mousePosition = mousePos;
     ///pitch and yaw

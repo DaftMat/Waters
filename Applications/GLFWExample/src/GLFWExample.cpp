@@ -44,12 +44,31 @@ void GLFWExample::loadExampleScene() {
     })));
     m_renderer->addTerrain(Terrain(128));
     m_lights.addLight(DirectLight({-0.1f, -1.f, 0.f}));
+
+    m_quadRenderer->addQuad(Quad(-1.f, 1.f, 2.f, 2.f)); // screen
+    m_quadRenderer->addQuad(Quad(-1.f, 1.f, 0.25f, 0.25f)); // sub screen
+
+    APP_INFO("Creating test FBOs...");
+    m_fbo = std::make_unique<FBO>(1600, 900, 32, FBO::Attachments(FBO::Attachments::Type::BUFFER));
+    m_screenFbo = std::make_unique<FBO>(1600, 900, 1, FBO::Attachments(FBO::Attachments::TEXTURE));
+    m_quadRenderer->quad(0).setTexture(m_screenFbo->textures()[0]);
+    m_quadRenderer->quad(1).setTexture(m_screenFbo->textures()[0]);
+    APP_INFO("FBO's created.");
+
     APP_INFO("Example scene loaded");
 }
 
 void GLFWExample::draw(double deltatime) {
+    m_fbo->prepare();
     m_renderer->prepare();
     m_renderer->render(m_lights, m_camera);
+    m_fbo->unbind(m_renderer->width(), m_renderer->height());
+
+    m_fbo->resolve(*m_screenFbo, 0);
+    //m_fbo->resolve(m_renderer->width(), m_renderer->height(), 0);
+
+    m_quadRenderer->prepare();
+    m_quadRenderer->render();
 }
 
 void GLFWExample::run() {
@@ -59,7 +78,7 @@ void GLFWExample::run() {
         auto currenttime = float(glfwGetTime());
         auto deltaTime = currenttime - m_lastTime;
         m_lastTime = currenttime;
-        moveCamera(0.016);
+        moveCamera(deltaTime);
         draw(deltaTime);
         m_window->finish();
     }

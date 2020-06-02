@@ -15,6 +15,8 @@
  */
 class ENGINE_API Renderable {
 public:
+    enum Type { OBJECT = 0, TERRAIN, WATER };
+
     Renderable() = default;
     virtual ~Renderable() = default;
 

@@ -11,7 +11,7 @@ void TerrainRenderer::render( const std::vector<Terrain>& terrains,
     {
         m_shaderProgram->setMat4( "model", t.model() );
         m_shaderProgram->setMaterial( t.material(), "terrainMat" );
-        m_shaderProgram->setInt("entityType", 1);
+        m_shaderProgram->setInt("entityType", Renderable::Type::TERRAIN);
         t.prepare();
         t.render( GL_TRIANGLES );
         t.unbind();

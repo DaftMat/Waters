@@ -75,3 +75,9 @@ void Material::setSetting( const std::string& name, bool data ) {
         return setting.name == name;
     } )->data.boolData = data;
 }
+
+Texture &Material::texture(const std::string &name) {
+    return *std::find_if(m_textures.begin(), m_textures.end(), [name](const Texture &texture) {
+        return texture.name() == name;
+    });
+}

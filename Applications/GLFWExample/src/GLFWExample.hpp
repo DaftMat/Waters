@@ -4,6 +4,7 @@
 #pragma once
 
 #include <Core/BaseApplication.hpp>
+#include <Minimal-Engine/Renderers/FrameBuffers/FBO/FBO.hpp>
 #include "GLFWWindow.hpp"
 
 class GLFWExample : public BaseApplication<GLFWWindow> {
@@ -21,4 +22,5 @@ private:
 
     LightCollection m_lights;
     Camera m_camera;
+    std::unique_ptr<FBO> m_fbo {nullptr}, m_screenFbo {nullptr};
 };

@@ -95,6 +95,8 @@ class Material
      */
     void setSetting( const std::string& name, bool data );
 
+    Texture &texture(const std::string &name);
+
     /** Textures list getter.
      *
      * @return list of textures in the material.

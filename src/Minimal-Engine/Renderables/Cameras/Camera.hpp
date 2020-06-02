@@ -26,7 +26,7 @@ class ENGINE_API Camera
      * @param yaw - horizontal rotation
      * @param pitch - vertical rotation
      */
-    Camera( const glm::vec3& position = {0.f, 0.f, 3.f},
+    explicit Camera( const glm::vec3& position = {0.f, 0.f, 3.f},
             const glm::vec3& worldUp  = {0.f, 1.f, 0.f},
             float yaw                 = -90.f,
             float pitch               = 0.f );
@@ -35,7 +35,7 @@ class ENGINE_API Camera
      *
      * @return the view matrix of the camera.
      */
-    glm::mat4 getViewMatrix() const {
+    [[nodiscard]] glm::mat4 getViewMatrix() const {
         return glm::lookAt( m_position, m_position + m_front, m_up );
     }
 
@@ -43,13 +43,13 @@ class ENGINE_API Camera
      *
      * @return fov (zoom) of the camera.
      */
-    float getFov() const { return m_fov; }
+    [[nodiscard]] float getFov() const { return m_fov; }
 
     /** position getter.
      *
      * @return position of the camera.
      */
-    glm::vec3 getPosition() const { return m_position; }
+    [[nodiscard]] glm::vec3 getPosition() const { return m_position; }
 
     /** position setter.
      *
@@ -63,7 +63,7 @@ class ENGINE_API Camera
      *
      * @return the direction the camera faces.
      */
-    glm::vec3 getViewDirection() const { return m_front; }
+    [[nodiscard]] glm::vec3 getViewDirection() const { return m_front; }
 
     /** keyboard movement processing function.
      * will alter position.
@@ -98,12 +98,11 @@ class ENGINE_API Camera
     glm::vec3 m_worldUp;
     glm::vec3 m_target;
 
-    float m_yaw, m_pitch, m_dist, m_hAngle{0.f};
+    float m_yaw, m_pitch, m_dist;
     float m_velocity, m_sensitivity, m_fov;
 
     glm::vec2 m_mousePosition;
     bool m_mousePressed{false};
-    bool m_firstMouseMove{true};
 };
 
 #endif // DAFT_GAMEENGINE_CAMERA_HPP
