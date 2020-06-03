@@ -36,8 +36,7 @@
 #   error Unsupported Operating System.
 #   endif
 #el*/
-#if defined( __APPLE__ ) ||
-defined( __MACH__ ) /// Mac OS
+#if defined( __APPLE__ ) || defined( __MACH__ ) /// Mac OS
 #    define MAC_OS
 #    if defined( __i386__ )
 #        define X86_ARCH
@@ -66,8 +65,7 @@ defined( __MACH__ ) /// Mac OS
 #   define DLL_EXPORT   __declspec(dllexport)
 #   define DLL_IMPORT   __declspec(dllimport)
 #el*/
-#if defined( GCC_COMPILER ) ||
-    defined( CLANG_COMPILER )
+#if defined( GCC_COMPILER ) || defined( CLANG_COMPILER )
 #    define DLL_EXPORT
 #    define DLL_IMPORT
 #else
