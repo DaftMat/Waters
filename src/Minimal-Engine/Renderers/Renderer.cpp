@@ -10,6 +10,9 @@ m_width {width}, m_height {height}, m_near {near}, m_far {far}, m_fogDensity {fo
     m_terrainRenderer = std::make_unique<TerrainRenderer>(new StaticShader("shaders/blinnphong.vert.glsl", "shaders/blinnphong.frag.glsl"));
     m_waterRenderer = std::make_unique<WaterRenderer>(new StaticShader("shaders/blinnphong.vert.glsl", "shaders/blinnphong.frag.glsl"));
 
+    m_multisampledFBO = std::make_unique<FBO>(1920, 1080, 32, FBO::Attachments(FBO::Attachments::BUFFER));
+    m_screenFBO = std::make_unique<FBO>(1920, 1080, 1, FBO::Attachments(FBO::Attachments::TEXTURE, 1, FBO::Attachments::NONE));
+
     glViewport(0, 0, width, height);
     glEnable( GL_MULTISAMPLE );
     glDepthFunc( GL_LESS );
@@ -51,7 +54,9 @@ void Renderer::render(const LightCollection &lights, const Camera &camera, doubl
     m_terrainRenderer->render(m_terrains, lights);
     //m_terrainRenderer->unbind();
 
-    m_waterRenderer->refractionFBO().unbind(m_width, m_height); /// to the screen buffer
+    m_multisampledFBO->prepare(); /// to the screen buffer
+    clearGL();
+
     disableClipDistance();
     m_terrainRenderer->prepare();
     m_terrainRenderer->loadMatrices(view, proj);
@@ -67,6 +72,10 @@ void Renderer::render(const LightCollection &lights, const Camera &camera, doubl
     m_terrainRenderer->loadSky(m_skyColor);
     m_waterRenderer->render(m_waters, lights, deltatime);
     m_waterRenderer->unbind();
+
+    m_multisampledFBO->unbind(m_width, m_height);
+
+    m_multisampledFBO->resolve(*m_screenFBO, 0);
 }
 
 void Renderer::resize(int width, int height) {

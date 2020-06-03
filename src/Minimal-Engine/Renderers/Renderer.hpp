@@ -38,6 +38,8 @@ public:
 
     [[nodiscard]] const WaterRenderer &waterRenderer() const { return *m_waterRenderer; }
 
+    [[nodiscard]] const FBO &screenFBO() const { return *m_screenFBO; }
+
 private:
     static void initGL();
     void clearGL() const;
@@ -49,6 +51,9 @@ private:
 
     std::vector<Terrain> m_terrains;
     std::vector<Water> m_waters;
+
+    std::unique_ptr<FBO> m_multisampledFBO{nullptr};
+    std::unique_ptr<FBO> m_screenFBO{nullptr};
 
     int m_width, m_height;
     float m_near, m_far, m_fogDensity, m_fogGradient;

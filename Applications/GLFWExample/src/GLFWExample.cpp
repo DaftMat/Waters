@@ -45,10 +45,10 @@ void GLFWExample::loadExampleScene() {
     m_renderer->addWater(Water());
     m_lights.addLight(DirectLight({-0.1f, -1.f, 0.f}));
 
-    //m_quadRenderer->addQuad(Quad(-1.f, 1.f, 0.5f, 0.5f)); // sub screen
+    m_quadRenderer->addQuad(Quad(-1.f, 1.f, 2.f, 2.f)); //screen
     //m_quadRenderer->addQuad(Quad(0.5f, 1.f, 0.5f, 0.5f)); // sub screen
 
-    //m_quadRenderer->quad(0).setTexture(m_renderer->waterRenderer().reflectionFBO().textures()[0]);
+    m_quadRenderer->quad(0).setTexture(m_renderer->screenFBO().textures()[0]);
     //m_quadRenderer->quad(1).setTexture(m_renderer->waterRenderer().refractionFBO().textures()[0]);
     APP_INFO("Example scene loaded");
 }
@@ -57,8 +57,8 @@ void GLFWExample::draw(double deltatime) {
     m_renderer->prepare();
     m_renderer->render(m_lights, m_camera, deltatime);
 
-    //m_quadRenderer->prepare();
-    //m_quadRenderer->render();
+    m_quadRenderer->prepare();
+    m_quadRenderer->render();
 }
 
 void GLFWExample::run() {
