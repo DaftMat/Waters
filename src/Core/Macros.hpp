@@ -3,6 +3,7 @@
 //
 #pragma once
 
+// clang-format off
 /// --------------------------------------------------
 /// Compiler identification
 /// --------------------------------------------------
@@ -71,3 +72,4 @@
 #else
 #    error Unsupported platform.
 #endif
+// clang-format on
