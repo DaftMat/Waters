@@ -39,17 +39,15 @@ void GLFWExample::moveCamera(float dt) {
 
 void GLFWExample::loadExampleScene() {
     APP_INFO("Loading example scene...");
-    m_renderer->addTerrain(Terrain(HeightMap(Noise::generate(512, 7, 0.4f, 2.f, 0.f, Perlin(1024)), [](float h){
+    m_renderer->addTerrain(Terrain(HeightMap(Noise::generate(512, 7, 0.4f, 2.f, 0.f, Perlin(1024, 69420)), [](float h){
         return 4.f * (h - 0.5f) * 2.f + 1.f;
     })));
-    m_renderer->addWater(Water());
+    m_renderer->addWater(Water(0.03f, 128));
     m_lights.addLight(DirectLight({-0.1f, -1.f, 0.f}));
 
     m_quadRenderer->addQuad(Quad(-1.f, 1.f, 2.f, 2.f)); //screen
-    //m_quadRenderer->addQuad(Quad(0.5f, 1.f, 0.5f, 0.5f)); // sub screen
 
     m_quadRenderer->quad(0).setTexture(m_renderer->screenFBO().textures()[0]);
-    //m_quadRenderer->quad(1).setTexture(m_renderer->waterRenderer().refractionFBO().textures()[0]);
     APP_INFO("Example scene loaded");
 }
 

@@ -15,11 +15,12 @@ class Material
      * e.g. albedo color, procedural textures, ...
      */
     struct Setting {
-        enum Type { VECTOR, SCALAR, BOOL } type;
+        enum Type { VECTOR, SCALAR, BOOL, INT } type;
         std::string name; ///< name of the setting.
         union {
             glm::vec3 vectorData;
             float scalarData;
+            int intData;
             bool boolData;
         } data; ///< data of the settings, can either be a vector or a float.
     };
@@ -62,6 +63,13 @@ class Material
      */
     void addSetting( std::string name, bool data );
 
+    /** adds a bool setting to the material.
+     *
+     * @param name - name of the setting.
+     * @param data - bool of the setting.
+     */
+    void addSetting( std::string name, int data );
+
     /** Deletes a texture from the material.
      *
      * @param name - name of the texture to be deleted.
@@ -94,6 +102,13 @@ class Material
      * @param data - new bool of the setting.
      */
     void setSetting( const std::string& name, bool data );
+
+    /** Sets the bool data of a setting in the material.
+     *
+     * @param name - name of the setting to be set.
+     * @param data - new bool of the setting.
+     */
+    void setSetting( const std::string& name, int data );
 
     Texture &texture(const std::string &name);
 

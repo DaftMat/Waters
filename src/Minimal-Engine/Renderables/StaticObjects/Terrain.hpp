@@ -12,6 +12,14 @@
  */
 class ENGINE_API Terrain : public Renderable {
 public:
+    struct TextureLayer {
+        TextureLayer(std::string cpath, float cstartHeight, float cblend)
+        : path {std::move(cpath)}, startHeight{cstartHeight}, blend{cblend} {}
+
+        std::string path;
+        float startHeight;
+        float blend;
+    };
     /** Plane terrain constructor.
      *
      * @param resolution - number of vertices on the terrain's border.
@@ -28,8 +36,12 @@ public:
 
     [[nodiscard]] glm::mat4 model() const override { return glm::translate(glm::mat4{1.f}, m_position); }
 
+    void addTextureLayer(const TextureLayer &textureLayer);
+
 private:
     void init(float size);
 
     glm::vec3 m_position{0.f};
+    int m_numLayers{0};
+    float m_minHeight, m_maxHeight;
 };

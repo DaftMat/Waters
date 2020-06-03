@@ -2,6 +2,7 @@
 layout (location = 0) out vec4 fragColor;
 
 const int MAX_LIGHTS = 32;
+const int MAX_LAYERS = 8;
 
 //types of entity
 const int OBJECT_T  = 0;
@@ -24,7 +25,17 @@ struct ObjectMaterial {
     bool useFakeLighting;
 };
 
+struct TextureLayer {
+    sampler2D texture;
+    float startHeight;
+    float blend;
+};
+
 struct TerrainMaterial {
+    TextureLayer texLayers[MAX_LAYERS];
+    int numLayers;
+    float maxHeight;
+    float minHeight;
     float reflectivity;
     float shininess;
     float tileFactor;
@@ -105,6 +116,7 @@ GenericMaterial getGenericMat(WaterMaterial mat);
 
 //helpers
 float distance(float near, float far, float depth);
+float invlerp(float a, float b, float v);
 
 vec3 normal;
 
@@ -215,18 +227,17 @@ GenericMaterial getGenericMat(TerrainMaterial mat) {
     ret.specular = vec4(vec3(0.8), 1.0);
     //albedo
 
-    //vec2 tiledCoords = fragTex * mat.tileFactor;
-    ret.albedo = vec4(vec3(0.3), 1.0);
-    /**
-    vec4 blend = texture(mat.blendMap, fragTex);
-    float blackTexAmount = 1.0 - (blend.r + blend.g + blend.b);
-    vec4 black = texture(mat.blackTex, tiledCoords) * blackTexAmount;
-    vec4 red = texture(mat.redTex, tiledCoords) * blend.r;
-    vec4 green = texture(mat.greenTex, tiledCoords) * blend.g;
-    vec4 blue = texture(mat.blueTex, tiledCoords) * blend.b;
-    ret.albedo = black + red + green + blue;
-    **/
+    vec2 tiledCoords = fragTex * mat.tileFactor;
+    float heightPercent = invlerp(mat.minHeight, mat.maxHeight, fragPos.y);
 
+    ret.albedo = vec4(vec3(0.0), 1.0);
+    for (int i = 0 ; i < mat.numLayers ; ++i) {
+        float strength = invlerp(-mat.texLayers[i].blend/2.0 - 1e-6, mat.texLayers[i].blend/2.0, heightPercent - mat.texLayers[i].startHeight);
+
+        ret.albedo.xyz = ret.albedo.xyz * (1 - strength) + texture(mat.texLayers[i].texture, tiledCoords).xyz * strength;
+    }
+
+    //ret.albedo.xyz = normalize(ret.albedo.xyz);
     return ret;
 }
 
@@ -274,4 +285,8 @@ GenericMaterial getGenericMat(WaterMaterial mat) {
 
 float distance(float near, float far, float depth) {
     return 2.0 * near * far / (far + near - (2.0 * depth - 1.0) * (far - near));
+}
+
+float invlerp(float a, float b, float v) {
+    return clamp((v - a) / (b - a), 0.0, 1.0);
 }

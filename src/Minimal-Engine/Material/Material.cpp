@@ -42,6 +42,14 @@ void Material::addSetting( std::string name, bool data ) {
     m_settings.push_back( setting );
 }
 
+void Material::addSetting( std::string name, int data ) {
+    Setting setting{};
+    setting.type          = Setting::Type::INT;
+    setting.name          = std::move( name );
+    setting.data.intData = data;
+    m_settings.push_back( setting );
+}
+
 void Material::deleteTexture( const std::string& name ) {
     m_textures.erase(
         std::remove_if( m_textures.begin(),
@@ -74,6 +82,12 @@ void Material::setSetting( const std::string& name, bool data ) {
     std::find_if( m_settings.begin(), m_settings.end(), [name]( const Setting& setting ) {
         return setting.name == name;
     } )->data.boolData = data;
+}
+
+void Material::setSetting( const std::string& name, int data ) {
+    std::find_if( m_settings.begin(), m_settings.end(), [name]( const Setting& setting ) {
+        return setting.name == name;
+    } )->data.intData = data;
 }
 
 Texture &Material::texture(const std::string &name) {

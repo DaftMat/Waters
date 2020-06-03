@@ -37,44 +37,46 @@ void Renderer::render(const LightCollection &lights, const Camera &camera, doubl
     m_terrainRenderer->prepare();
     Camera reflectionCamera = camera;
     reflectionCamera.flip();
+    /// Terrains
     m_terrainRenderer->loadMatrices(reflectionCamera.getViewMatrix(), proj);
     m_terrainRenderer->loadFog(m_fogDensity, m_fogGradient);
     m_terrainRenderer->loadSky(m_skyColor);
     m_terrainRenderer->setClipPlane(glm::vec4{0.f, 1.f, 0.f, 0.f});
     m_terrainRenderer->render(m_terrains, lights);
-    //m_terrainRenderer->unbind();
+    m_terrainRenderer->unbind();
 
     m_waterRenderer->refractionFBO().prepare(); /// to refraction buffer
     clearGL();
+    /// Terrains
     m_terrainRenderer->prepare();
     m_terrainRenderer->loadMatrices(view, proj);
     m_terrainRenderer->loadFog(m_fogDensity, m_fogGradient);
     m_terrainRenderer->loadSky(m_skyColor);
     m_terrainRenderer->setClipPlane(glm::vec4{0.f, -1.f, 0.f, 1.f});
     m_terrainRenderer->render(m_terrains, lights);
-    //m_terrainRenderer->unbind();
+    m_terrainRenderer->unbind();
 
     m_multisampledFBO->prepare(); /// to the screen buffer
     clearGL();
-
     disableClipDistance();
+    /// Terrains
     m_terrainRenderer->prepare();
     m_terrainRenderer->loadMatrices(view, proj);
     m_terrainRenderer->loadFog(m_fogDensity, m_fogGradient);
     m_terrainRenderer->loadSky(m_skyColor);
     m_terrainRenderer->render(m_terrains, lights);
     m_terrainRenderer->unbind();
-
-    ///waters
+    /// Waters
     m_waterRenderer->prepare();
-    m_terrainRenderer->loadMatrices(view, proj);
-    m_terrainRenderer->loadFog(m_fogDensity, m_fogGradient);
-    m_terrainRenderer->loadSky(m_skyColor);
+    m_waterRenderer->loadMatrices(view, proj);
+    m_waterRenderer->loadFog(m_fogDensity, m_fogGradient);
+    m_waterRenderer->loadSky(m_skyColor);
     m_waterRenderer->render(m_waters, lights, deltatime);
     m_waterRenderer->unbind();
-
+    /// finished
     m_multisampledFBO->unbind(m_width, m_height);
 
+    /// resolve to screen's texture
     m_multisampledFBO->resolve(*m_screenFBO, 0);
 }
 

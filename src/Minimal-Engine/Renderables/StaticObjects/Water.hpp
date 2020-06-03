@@ -4,9 +4,9 @@
 #pragma once
 
 
-#include "Terrain.hpp"
+#include <Minimal-Engine/Renderables/Renderable.hpp>
 
-class Water : public Terrain {
+class Water : public Renderable {
 public:
     explicit Water(float speed = 0.03f, int resolution = 128, float size = 10.f);
 

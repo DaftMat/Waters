@@ -32,6 +32,8 @@ class ENGINE_API HeightMap
 
     void setFun( std::function<float( float )> curve ) { m_fun = std::move( curve ); }
 
+    [[nodiscard]] auto getFun() const { return m_fun; }
+
   private:
     std::vector<float> m_map;
     int m_size;

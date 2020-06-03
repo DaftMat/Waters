@@ -1,6 +1,7 @@
 //
 // Created by mathis on 01/06/2020.
 //
+#include <Minimal-Engine/Material/Material.hpp>
 #include "StaticShader.hpp"
 
 void StaticShader::setMaterial(const Material &material, const std::string &name) const {
@@ -20,6 +21,10 @@ void StaticShader::setMaterial(const Material &material, const std::string &name
                 break;
             case Material::Setting::Type::BOOL:
                 setBool( name + "." + setting.name, setting.data.boolData );
+                break;
+            case Material::Setting::Type::INT:
+                setInt(name + "." + setting.name, setting.data.boolData);
+                break;
         }
     }
 }
