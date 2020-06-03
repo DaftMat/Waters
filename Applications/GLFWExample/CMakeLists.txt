@@ -1,5 +1,5 @@
 #TODO: replace exampleApp with your application name
-set(apptarget exampleApp)
+set(apptarget waters)
 
 #TODO: load the library you need in addition to your engine (Qt, GLFW, ...)
 find_package(glfw3 CONFIG REQUIRED)

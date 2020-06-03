@@ -1,50 +1,36 @@
-# Engine-Template
-Template repository for any C++/OpenGL project. Uses GLFW for the context.
+# Waters !
+A minimal rendering engine for waters (and terrains)
 
-## Compiling & Executing
-To compile with this project configuration, run:
+## List of dependencies:
+ - Here's the list of repos you want to install before running this app.
+   - [GLFW](https://github.com/glfw/glfw)
+   - [GLM](https://github.com/g-truc/glm)
+   - [Assimp](https://github.com/assimp/assimp)
+   - [spdlog](https://github.com/gabime/spdlog)
+   - [OpenGL/GLSL 4.4+](https://www.opengl.org/)
+ - Dependencies as submodules :
+   - [GLAD](https://glad.dav1d.de/)
+   - [random](https://github.com/effolkronium/random) by effolkronium
+   - [STB](https://github.com/nothings/stb)
+
+## Downloading, Compiling & Executing
+### Downloading
+```txt
+$ git clone https://github.com/DaftMat/Waters.git
+```
+### Compiling
+From project's root:
 ```txt
 $ mkdir build
 $ cd build
 $ cmake ..
 $ make
 ```
-Then you can go and run the project from the `bin` folder:
+### Executing
+From `bin/Release/` :
 ```txt 
-$ ./<Your_Project_Name>
+$ ./waters
 ```
 
-## List of features:
- - 3rdPartyLibs *>* dependencies management.
- - doc
-   - run `./generate.sh` from /doc/ to generate any documentation.
- - scripts
-   - pre-commit-hook code formatting scripts, don't forget to set them up.
- - resources/shaders
-   - your engine's assets
- - src
-   - your engine's sources
-   
-## Setting up
-
-### Before anything else
-
-Open the project in an IDE, then find the `TODO` list. Don't pay attention to those in `3rdPartyLibs` and `docs` the others will give you the locations where you can set your own settings. Make sure you don't forget any.
-
-Go in the`src` folder, delete the `Minimal-Engine` and start your own !
-
-Make sure you don't delete the `src/Core` folder, it provides useful include headers.
-
-### Start drawing !
-
-Now, you just have to jump into the code. Use:
- ```cpp
-#include <Core/OpenGL.hpp>
-```
-wherever you want to use OpenGL, and:
-```cpp
-#include <Core/Random.hpp>
-```
-wherever you want to generate random numbers.
-
-As well, you can inherit from `BaseApplication` and use the engine api you made to build your own windowed abstraction. Follow the guidelines described by `AppExamples`
+## Using The Engine
+As well, you can inherit from `BaseApplication` and use the engine api you made to build your own windowed abstraction. Follow the guidelines described by this project.
