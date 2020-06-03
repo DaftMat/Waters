@@ -6,8 +6,8 @@
 #include <Core/Random.hpp>
 
 Perlin::Perlin( int size, int seed ) {
-    if (size < 257) size = 257;
-    Random::seed(seed);
+    if ( size < 257 ) size = 257;
+    Random::seed( seed );
     for ( int i = 0; i < size; ++i )
         p.push_back( (int)Random::get( 0, 255 ) );
 }

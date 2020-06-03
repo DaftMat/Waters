@@ -5,7 +5,7 @@
 #include "QuadRenderer.hpp"
 
 QuadRenderer::QuadRenderer() {
-    m_shader = std::make_unique<QuadShader>("shaders/quad.vert.glsl", "shaders/quad.frag.glsl");
+    m_shader = std::make_unique<QuadShader>( "shaders/quad.vert.glsl", "shaders/quad.frag.glsl" );
 }
 
 void QuadRenderer::render() const {

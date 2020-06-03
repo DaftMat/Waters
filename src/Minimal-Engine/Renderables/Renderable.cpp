@@ -8,8 +8,8 @@ void Renderable::prepare() const {
     m_material.prepare();
 }
 
-void Renderable::render(GLuint type) const {
-    m_mesh.render(type);
+void Renderable::render( GLuint type ) const {
+    m_mesh.render( type );
 }
 
 void Renderable::unbind() const {

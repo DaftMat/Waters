@@ -38,7 +38,7 @@ class Texture
      */
     [[nodiscard]] GLuint id() const { return m_id; }
 
-    GLuint &id() { return m_id; }
+    GLuint& id() { return m_id; }
 
   private:
     GLuint m_id;

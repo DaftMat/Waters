@@ -13,28 +13,29 @@
 /** Base class for all renderable objects.
  *
  */
-class ENGINE_API Renderable {
-public:
+class ENGINE_API Renderable
+{
+  public:
     enum Type { OBJECT = 0, TERRAIN, WATER };
 
-    Renderable() = default;
+    Renderable()          = default;
     virtual ~Renderable() = default;
 
     void prepare() const;
 
-    void render(GLuint type) const;
+    void render( GLuint type ) const;
 
     void unbind() const;
 
-    [[nodiscard]] virtual glm::mat4 model() const { return glm::mat4{1.f}; }
+    [[nodiscard]] virtual glm::mat4 model() const { return glm::mat4{ 1.f }; }
 
-    [[nodiscard]] const Mesh &mesh() const { return m_mesh; }
+    [[nodiscard]] const Mesh& mesh() const { return m_mesh; }
 
-    [[nodiscard]] const Material &material() const { return m_material; };
+    [[nodiscard]] const Material& material() const { return m_material; };
 
-    Material &material() { return m_material; };
+    Material& material() { return m_material; };
 
-protected:
+  protected:
     Mesh m_mesh;
     Material m_material;
 };

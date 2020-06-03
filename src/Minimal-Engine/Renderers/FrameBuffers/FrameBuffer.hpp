@@ -19,7 +19,7 @@ class FrameBuffer
      * @param width - screen width.
      * @param height - screen height.
      */
-    void unbind(int width, int height) const;
+    void unbind( int width, int height ) const;
 
     [[nodiscard]] const std::vector<GLuint>& textures() const { return m_textures; }
 

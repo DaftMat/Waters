@@ -3,8 +3,8 @@
 //
 
 #include "FrameBuffer.hpp"
-#include <iostream>
 #include <Core/Log.hpp>
+#include <iostream>
 
 FrameBuffer::FrameBuffer( int width, int height, int numSamples ) :
     m_width{ width }, m_height{ height }, m_numSamples{ numSamples } {
@@ -181,13 +181,13 @@ void FrameBuffer::prepare() const {
     if ( glCheckFramebufferStatus( GL_FRAMEBUFFER ) != GL_FRAMEBUFFER_COMPLETE )
     {
         glBindFramebuffer( GL_FRAMEBUFFER, 0 );
-        ENGINE_ERROR("ERROR:FRAMEBUFFER: Framebuffer is not complete.");
+        ENGINE_ERROR( "ERROR:FRAMEBUFFER: Framebuffer is not complete." );
         return;
     }
     glViewport( 0, 0, m_width, m_height );
 }
 
-void FrameBuffer::unbind(int width, int height) const {
+void FrameBuffer::unbind( int width, int height ) const {
     glBindFramebuffer( GL_FRAMEBUFFER, 0 );
     glViewport( 0, 0, width, height );
 }
@@ -199,16 +199,8 @@ void FrameBuffer::resolve( int width, int height, int index ) const {
     glBindFramebuffer( GL_READ_FRAMEBUFFER, m_fbo );
     glReadBuffer( GL_COLOR_ATTACHMENT0 + index );
     glDrawBuffer( GL_BACK );
-    glBlitFramebuffer( 0,
-                       0,
-                       m_width,
-                       m_height,
-                       0,
-                       0,
-                       width,
-                       height,
-                       GL_COLOR_BUFFER_BIT,
-                       GL_NEAREST );
+    glBlitFramebuffer(
+        0, 0, m_width, m_height, 0, 0, width, height, GL_COLOR_BUFFER_BIT, GL_NEAREST );
     glBindFramebuffer( GL_FRAMEBUFFER, 0 );
 }
 

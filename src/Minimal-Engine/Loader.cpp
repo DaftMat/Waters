@@ -3,13 +3,13 @@
 //
 #define STB_IMAGE_IMPLEMENTATION
 
-#include <Core/Log.hpp>
 #include "Loader.hpp"
+#include <Core/Log.hpp>
 
 #include <stb/stb_image.h>
 
-
-Mesh Loader::loadMesh(const std::vector<Mesh::Vertex> &vertices, const std::vector<GLuint> &indices) {
+Mesh Loader::loadMesh( const std::vector<Mesh::Vertex>& vertices,
+                       const std::vector<GLuint>& indices ) {
     GLuint vao, vbo, ebo;
     glGenVertexArrays( 1, &vao );
     glGenBuffers( 1, &vbo );
@@ -30,7 +30,7 @@ Mesh Loader::loadMesh(const std::vector<Mesh::Vertex> &vertices, const std::vect
 
     glVertexAttribPointer( 0, 3, GL_FLOAT, GL_FALSE, sizeof( Mesh::Vertex ), (void*)nullptr );
     glVertexAttribPointer(
-            1, 3, GL_FLOAT, GL_FALSE, sizeof( Mesh::Vertex ), (void*)offsetof( Mesh::Vertex, normal ) );
+        1, 3, GL_FLOAT, GL_FALSE, sizeof( Mesh::Vertex ), (void*)offsetof( Mesh::Vertex, normal ) );
     glVertexAttribPointer( 2,
                            2,
                            GL_FLOAT,
@@ -39,22 +39,22 @@ Mesh Loader::loadMesh(const std::vector<Mesh::Vertex> &vertices, const std::vect
                            (void*)offsetof( Mesh::Vertex, texCoords ) );
 
     glBindVertexArray( 0 );
-    m_vaos.push_back(vao);
-    m_vbos.push_back(vbo);
-    m_vbos.push_back(ebo);
-    return Mesh(vao, indices.size());
+    m_vaos.push_back( vao );
+    m_vbos.push_back( vbo );
+    m_vbos.push_back( ebo );
+    return Mesh( vao, indices.size() );
 }
 
 void Loader::clean() {
-    for (auto &vao : m_vaos)
-        glDeleteVertexArrays(1, &vao);
-    for (auto &vbo : m_vbos)
-        glDeleteBuffers(1, &vbo);
-    for (auto &tex : m_texs)
-        glDeleteTextures(1, &tex);
+    for ( auto& vao : m_vaos )
+        glDeleteVertexArrays( 1, &vao );
+    for ( auto& vbo : m_vbos )
+        glDeleteBuffers( 1, &vbo );
+    for ( auto& tex : m_texs )
+        glDeleteTextures( 1, &tex );
 }
 
-Texture Loader::loadTexture(const std::string &name, const std::string &path) {
+Texture Loader::loadTexture( const std::string& name, const std::string& path ) {
     GLuint id;
     glGenTextures( 1, &id );
 
@@ -73,7 +73,7 @@ Texture Loader::loadTexture(const std::string &name, const std::string &path) {
         glBindTexture( GL_TEXTURE_2D, id );
 
         glTexImage2D(
-                GL_TEXTURE_2D, 0, colorFormat, width, height, 0, colorFormat, GL_UNSIGNED_BYTE, data );
+            GL_TEXTURE_2D, 0, colorFormat, width, height, 0, colorFormat, GL_UNSIGNED_BYTE, data );
         glGenerateMipmap( GL_TEXTURE_2D );
 
         glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT );
@@ -82,13 +82,13 @@ Texture Loader::loadTexture(const std::string &name, const std::string &path) {
         glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR );
     }
     else
-    { ENGINE_ERROR("Failed to load texture {0}", path); }
+    { ENGINE_ERROR( "Failed to load texture {0}", path ); }
     stbi_image_free( data );
     m_texs.push_back( id );
 
-    return Texture( name , id );
+    return Texture( name, id );
 }
 
-std::vector<GLuint> Loader::m_vaos {};
-std::vector<GLuint> Loader::m_vbos {};
-std::vector<GLuint> Loader::m_texs {};
+std::vector<GLuint> Loader::m_vaos{};
+std::vector<GLuint> Loader::m_vbos{};
+std::vector<GLuint> Loader::m_texs{};

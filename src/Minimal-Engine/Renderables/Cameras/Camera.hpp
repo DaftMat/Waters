@@ -26,10 +26,10 @@ class ENGINE_API Camera
      * @param yaw - horizontal rotation
      * @param pitch - vertical rotation
      */
-    explicit Camera( const glm::vec3& position = {0.f, 0.f, 3.f},
-            const glm::vec3& worldUp  = {0.f, 1.f, 0.f},
-            float yaw                 = -90.f,
-            float pitch               = 0.f );
+    explicit Camera( const glm::vec3& position = { 0.f, 0.f, 3.f },
+                     const glm::vec3& worldUp  = { 0.f, 1.f, 0.f },
+                     float yaw                 = -90.f,
+                     float pitch               = 0.f );
 
     /** calculates view matrix.
      *
@@ -78,7 +78,10 @@ class ENGINE_API Camera
      */
     void processMouseScroll( float offset );
 
-    void processMousePress( const glm::vec2 &mousePos ) { m_mousePressed = true; m_mousePosition = mousePos; }
+    void processMousePress( const glm::vec2& mousePos ) {
+        m_mousePressed  = true;
+        m_mousePosition = mousePos;
+    }
 
     void processMouseRelease() { m_mousePressed = false; }
 
@@ -86,7 +89,7 @@ class ENGINE_API Camera
      *
      * @param mousePos - current mouse position.
      */
-    void processMouseMove( const glm::vec2 &mousePos );
+    void processMouseMove( const glm::vec2& mousePos );
 
     void flip();
 
@@ -104,7 +107,7 @@ class ENGINE_API Camera
     float m_velocity, m_sensitivity, m_fov;
 
     glm::vec2 m_mousePosition;
-    bool m_mousePressed{false};
+    bool m_mousePressed{ false };
 };
 
 #endif // DAFT_GAMEENGINE_CAMERA_HPP

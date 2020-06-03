@@ -16,10 +16,10 @@ class FBO : public FrameBuffer
         };
 
         explicit Attachments( Type pcolor         = TEXTURE,
-                     int num_color       = 1,
-                     Type pdepth         = BUFFER,
-                     Type pstencil       = NONE,
-                     Type pstencil_depth = NONE ) :
+                              int num_color       = 1,
+                              Type pdepth         = BUFFER,
+                              Type pstencil       = NONE,
+                              Type pstencil_depth = NONE ) :
             color{ pcolor },
             numColor{ num_color },
             depth{ pdepth },
@@ -33,7 +33,7 @@ class FBO : public FrameBuffer
         Type stencil_depth;
     };
 
-    FBO(int width, int height, int numSamples, Attachments attach ) :
+    FBO( int width, int height, int numSamples, Attachments attach ) :
         FrameBuffer( width, height, numSamples ) {
         initialize( attach );
     }

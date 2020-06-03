@@ -42,7 +42,9 @@ class EntityRenderer
         m_shaderProgram->setVec3( "skyColor", skyColor );
     }
 
-    void setClipPlane(const glm::vec4 &plane) const { m_shaderProgram->setVec4("clipPlane", plane); }
+    void setClipPlane( const glm::vec4& plane ) const {
+        m_shaderProgram->setVec4( "clipPlane", plane );
+    }
 
     void unbind() const { m_shaderProgram->stop(); }
 
@@ -51,7 +53,7 @@ class EntityRenderer
   protected:
     void setLights( const LightCollection& lights ) const;
 
-    std::unique_ptr<StaticShader> m_shaderProgram{nullptr};
+    std::unique_ptr<StaticShader> m_shaderProgram{ nullptr };
 };
 
 #endif // DAFT_GAMEENGINE_ENTITYRENDERER_HPP

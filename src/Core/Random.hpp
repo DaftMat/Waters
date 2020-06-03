@@ -9,4 +9,4 @@
 
 using Random = effolkronium::random_static;
 
-#endif //OPENGLTUTO_RANDOM_HPP
+#endif // OPENGLTUTO_RANDOM_HPP

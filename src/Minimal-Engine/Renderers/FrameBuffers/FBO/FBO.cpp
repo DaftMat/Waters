@@ -4,7 +4,7 @@
 
 #include "FBO.hpp"
 
-void FBO::initialize(FBO::Attachments attach ) {
+void FBO::initialize( FBO::Attachments attach ) {
     for ( int i = 0; i < attach.numColor; ++i )
     {
         if ( attach.color == Attachments::TEXTURE ) { addColorTexture(); }

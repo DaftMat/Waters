@@ -22,7 +22,7 @@ class ENGINE_API Mesh
     };
 
     Mesh() = default;
-    Mesh(GLuint vao, GLuint numVertex) : m_vao{vao}, m_numVertex{numVertex} {}
+    Mesh( GLuint vao, GLuint numVertex ) : m_vao{ vao }, m_numVertex{ numVertex } {}
     ~Mesh() = default;
 
     void prepare() const;
@@ -32,7 +32,7 @@ class ENGINE_API Mesh
     void unbind() const;
 
   private:
-    GLuint m_vao{0}, m_numVertex{0};
+    GLuint m_vao{ 0 }, m_numVertex{ 0 };
 };
 
 #endif // DAFT_GAMEENGINE_MESH_HPP

@@ -3,16 +3,16 @@
 //
 #pragma once
 
-
 #include <Minimal-Engine/Renderables/Renderable.hpp>
 
-class Water : public Renderable {
-public:
-    explicit Water(float speed = 0.03f, int resolution = 128, float size = 10.f);
+class Water : public Renderable
+{
+  public:
+    explicit Water( float speed = 0.03f, int resolution = 128, float size = 10.f );
 
-    void move(double deltatime);
+    void move( double deltatime );
 
-private:
+  private:
     float m_speed;
-    float m_offset{0};
+    float m_offset{ 0 };
 };

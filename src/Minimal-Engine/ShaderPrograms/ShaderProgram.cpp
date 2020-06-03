@@ -3,10 +3,10 @@
 //
 
 #include "ShaderProgram.hpp"
+#include <Core/Log.hpp>
 #include <fstream>
 #include <iostream>
 #include <sstream>
-#include <Core/Log.hpp>
 
 ShaderProgram::ShaderProgram( const char* vertexPath, const char* fragmentPath ) {
     std::string vertexCode;
@@ -32,7 +32,7 @@ ShaderProgram::ShaderProgram( const char* vertexPath, const char* fragmentPath )
         fShaderFile.close();
     }
     catch ( std::ifstream::failure& e )
-    { ENGINE_ERROR("ERROR:SHADER:FILE_NOT_SUCCESSFULLY_READ"); }
+    { ENGINE_ERROR( "ERROR:SHADER:FILE_NOT_SUCCESSFULLY_READ" ); }
 
     const char* vShaderCode = vertexCode.c_str();
     const char* fShaderCode = fragmentCode.c_str();
@@ -55,8 +55,8 @@ ShaderProgram::ShaderProgram( const char* vertexPath, const char* fragmentPath )
     glLinkProgram( m_id );
     checkLinkError( m_id );
     /// Release shader
-    glDetachShader(m_id, vertex);
-    glDetachShader(m_id, fragment);
+    glDetachShader( m_id, vertex );
+    glDetachShader( m_id, fragment );
     glDeleteShader( vertex );
     glDeleteShader( fragment );
 }
@@ -107,7 +107,7 @@ void ShaderProgram::checkCompileError( GLuint shader, const std::string& type ) 
     if ( !success )
     {
         glGetShaderInfoLog( shader, 1024, NULL, infoLog );
-        ENGINE_ERROR("ERROR:SHADER_COMPILATION of type : {0}{1}{2}", type, "\n", infoLog);
+        ENGINE_ERROR( "ERROR:SHADER_COMPILATION of type : {0}{1}{2}", type, "\n", infoLog );
     }
 }
 
@@ -118,6 +118,6 @@ void ShaderProgram::checkLinkError( GLuint program ) {
     if ( !success )
     {
         glGetProgramInfoLog( program, 1024, NULL, infoLog );
-        ENGINE_ERROR("ERROR:PROGRAM_LINKING\n{0}", infoLog);
+        ENGINE_ERROR( "ERROR:PROGRAM_LINKING\n{0}", infoLog );
     }
 }

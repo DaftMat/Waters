@@ -110,7 +110,7 @@ class Material
      */
     void setSetting( const std::string& name, int data );
 
-    Texture &texture(const std::string &name);
+    Texture& texture( const std::string& name );
 
     /** Textures list getter.
      *

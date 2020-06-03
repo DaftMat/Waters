@@ -44,8 +44,8 @@ void Material::addSetting( std::string name, bool data ) {
 
 void Material::addSetting( std::string name, int data ) {
     Setting setting{};
-    setting.type          = Setting::Type::INT;
-    setting.name          = std::move( name );
+    setting.type         = Setting::Type::INT;
+    setting.name         = std::move( name );
     setting.data.intData = data;
     m_settings.push_back( setting );
 }
@@ -90,8 +90,8 @@ void Material::setSetting( const std::string& name, int data ) {
     } )->data.intData = data;
 }
 
-Texture &Material::texture(const std::string &name) {
-    return *std::find_if(m_textures.begin(), m_textures.end(), [name](const Texture &texture) {
+Texture& Material::texture( const std::string& name ) {
+    return *std::find_if( m_textures.begin(), m_textures.end(), [name]( const Texture& texture ) {
         return texture.name() == name;
-    });
+    } );
 }
