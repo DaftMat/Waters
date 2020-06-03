@@ -13,7 +13,7 @@ public:
     explicit WaterRenderer(StaticShader *shader);
     ~WaterRenderer();
 
-    void render(std::vector<Water> &waters, const LightCollection& lights);
+    void render(std::vector<Water> &waters, const LightCollection& lights, double deltatime);
 
     [[nodiscard]] const FBO &refractionFBO() const { return *m_refractionFbo; }
     [[nodiscard]] const FBO &reflectionFBO() const { return *m_reflectionFbo; }

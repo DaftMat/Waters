@@ -35,6 +35,11 @@ struct WaterMaterial {
     sampler2D normalMap;
     sampler2D reflectionTex;
     sampler2D refractionTex;
+    sampler2D refractionDepth;
+    float near;
+    float far;
+    float offset;
+    float distortionForce;
     float reflectivity;
     float shininess;
     float tileFactor;
@@ -98,8 +103,13 @@ GenericMaterial getGenericMat(ObjectMaterial mat);
 GenericMaterial getGenericMat(TerrainMaterial mat);
 GenericMaterial getGenericMat(WaterMaterial mat);
 
+//helpers
+float distance(float near, float far, float depth);
+
+vec3 normal;
+
 void main() {
-    vec3 normal = normalize(fragNormal);
+    normal = normalize(fragNormal);
     vec3 resultColor = vec3(0.0);
 
     GenericMaterial mat;
@@ -112,7 +122,7 @@ void main() {
     } else if (entityType == WATER_T) {
         mat = getGenericMat(waterMat);
         resultColor = mat.albedo.rgb;
-        mat.albedo = vec4(vec3(0.0), 1.0); // add only specular color with shade functions to water.
+        mat.albedo = vec4(vec3(0.0), mat.albedo.a); // add only specular color with shade functions to water.
     }
 
     for (int i = 0 ; i < numPointLights ; ++i) {
@@ -135,7 +145,7 @@ void main() {
         color = color / (color + vec3(1.0));
         color = pow(color, vec3(1.0/2.2));
     }
-    fragColor = vec4(color, 1.0);
+    fragColor = vec4(color, mat.albedo.a);
     // fog
     fragColor = mix(vec4(skyColor, 1.0), fragColor, visibility);
 }
@@ -224,17 +234,44 @@ GenericMaterial getGenericMat(WaterMaterial mat) {
     GenericMaterial ret;
     ret.shininess = mat.shininess;
     ret.reflectivity = mat.reflectivity;
-    ret.specular = vec4(vec3(0.8), 1.0);
+    ret.specular = vec4(1.0);
 
     vec2 ndc = (clipSpace.xy / clipSpace.w) * 0.5 + 0.5;
     vec2 refracCoords = ndc;
     vec2 reflecCoords = vec2(ndc.x, -ndc.y);
 
+    float depth = texture(mat.refractionDepth, refracCoords).r;
+    float floorDist = distance(mat.near, mat.far, depth);
+    depth = gl_FragCoord.z;
+    float waterDist = distance(mat.near, mat.far, depth);
+    float waterDepth = floorDist - waterDist;
+
+    vec2 tiledCoords = mat.tileFactor * fragTex;
+    vec2 distordedCoords = texture(mat.dudvMap, vec2(tiledCoords.x + mat.offset, tiledCoords.y)).rg * 0.1;
+    distordedCoords = tiledCoords + vec2(distordedCoords.x, distordedCoords.y + mat.offset);
+    vec2 totalDistortion = (texture(mat.dudvMap, distordedCoords).rg * 2.0 - 1.0) * mat.distortionForce * clamp(waterDepth/20.0, 0.0, 1.0);
+
+    vec4 normalColor = texture(mat.normalMap, distordedCoords);
+    normal = normalize(vec3(normalColor.r * 2.0 - 1.0, normalColor.b * 1.0, normalColor.g * 2.0 - 1.0));
+
+    reflecCoords += totalDistortion;
+    reflecCoords.x = clamp(reflecCoords.x, 0.001, 0.999);
+    reflecCoords.y = clamp(reflecCoords.y, -0.999, -0.001);
+
+    refracCoords += totalDistortion;
+    refracCoords = clamp(refracCoords, 0.001, 0.999);
+
     vec4 reflection = texture(mat.reflectionTex, reflecCoords);
     vec4 refraction = texture(mat.refractionTex, refracCoords);
 
-    float coef = dot(normalize(toCamera), normalize(fragNormal));
+    float coef = pow(dot(normalize(toCamera), normal), mat.reflectivity);
+    coef = clamp(coef, 0.0, 1.0);
 
     ret.albedo = mix(reflection, refraction, coef);
+    ret.albedo.a = clamp(waterDepth/5.0, 0.0, 1.0);
     return ret;
+}
+
+float distance(float near, float far, float depth) {
+    return 2.0 * near * far / (far + near - (2.0 * depth - 1.0) * (far - near));
 }

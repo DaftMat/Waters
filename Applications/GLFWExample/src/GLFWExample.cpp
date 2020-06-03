@@ -42,7 +42,7 @@ void GLFWExample::loadExampleScene() {
     m_renderer->addTerrain(Terrain(HeightMap(Noise::generate(512, 7, 0.4f, 2.f, 0.f, Perlin(1024)), [](float h){
         return 4.f * (h - 0.5f) * 2.f + 1.f;
     })));
-    m_renderer->addWater(Water(128));
+    m_renderer->addWater(Water());
     m_lights.addLight(DirectLight({-0.1f, -1.f, 0.f}));
 
     //m_quadRenderer->addQuad(Quad(-1.f, 1.f, 0.5f, 0.5f)); // sub screen
@@ -55,7 +55,7 @@ void GLFWExample::loadExampleScene() {
 
 void GLFWExample::draw(double deltatime) {
     m_renderer->prepare();
-    m_renderer->render(m_lights, m_camera);
+    m_renderer->render(m_lights, m_camera, deltatime);
 
     //m_quadRenderer->prepare();
     //m_quadRenderer->render();

@@ -8,5 +8,11 @@
 
 class Water : public Terrain {
 public:
-    explicit Water(int resolution = 128, float size = 10.f);
+    explicit Water(float speed = 0.03f, int resolution = 128, float size = 10.f);
+
+    void move(double deltatime);
+
+private:
+    float m_speed;
+    float m_offset{0};
 };

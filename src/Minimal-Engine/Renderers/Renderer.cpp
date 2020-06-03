@@ -24,7 +24,7 @@ void Renderer::prepare() const {
     glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 }
 
-void Renderer::render(const LightCollection &lights, const Camera &camera) {
+void Renderer::render(const LightCollection &lights, const Camera &camera, double deltatime) {
     auto view = camera.getViewMatrix();
     auto proj = glm::perspective(camera.getFov(), float(m_width)/float(m_height), m_near, m_far);
 
@@ -47,7 +47,7 @@ void Renderer::render(const LightCollection &lights, const Camera &camera) {
     m_terrainRenderer->loadMatrices(view, proj);
     m_terrainRenderer->loadFog(m_fogDensity, m_fogGradient);
     m_terrainRenderer->loadSky(m_skyColor);
-    m_terrainRenderer->setClipPlane(glm::vec4{0.f, -1.f, 0.f, 0.f});
+    m_terrainRenderer->setClipPlane(glm::vec4{0.f, -1.f, 0.f, 1.f});
     m_terrainRenderer->render(m_terrains, lights);
     //m_terrainRenderer->unbind();
 
@@ -65,7 +65,7 @@ void Renderer::render(const LightCollection &lights, const Camera &camera) {
     m_terrainRenderer->loadMatrices(view, proj);
     m_terrainRenderer->loadFog(m_fogDensity, m_fogGradient);
     m_terrainRenderer->loadSky(m_skyColor);
-    m_waterRenderer->render(m_waters, lights);
+    m_waterRenderer->render(m_waters, lights, deltatime);
     m_waterRenderer->unbind();
 }
 

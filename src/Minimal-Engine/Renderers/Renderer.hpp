@@ -22,7 +22,7 @@ public:
 
     void prepare() const;
 
-    void render(const LightCollection &lights, const Camera &camera);
+    void render(const LightCollection &lights, const Camera &camera, double deltatime);
 
     void addTerrain(const Terrain &terrain) { m_terrains.push_back(terrain); }
 

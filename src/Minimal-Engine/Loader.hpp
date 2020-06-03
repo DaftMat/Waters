@@ -7,12 +7,15 @@
 
 #include <Minimal-Engine/Geometry/Mesh.hpp>
 #include <spdlog/common.h>
+#include <Minimal-Engine/Material/Texture.hpp>
 
 class ENGINE_API Loader {
 public:
     static Mesh loadMesh(const std::vector<Mesh::Vertex> &vertices, const std::vector<GLuint> &indices);
+    static Texture loadTexture(const std::string &name, const std::string &path);
     static void clean();
 private:
     static std::vector<GLuint> m_vaos;
     static std::vector<GLuint> m_vbos;
+    static std::vector<GLuint> m_texs;
 };
