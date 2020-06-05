@@ -13,9 +13,9 @@ class Perlin
   public:
     explicit Perlin( int size, int seed = 2020 );
 
-    float noise( float x, float y, float z ) const;
+    [[nodiscard]] float noise( float x, float y, float z ) const;
 
-    int size() const { return p.size(); }
+    [[nodiscard]] int size() const { return p.size(); }
 
   private:
     static constexpr float fade( float t ) { return t * t * t * ( t * ( t * 6 - 15 ) + 10 ); }

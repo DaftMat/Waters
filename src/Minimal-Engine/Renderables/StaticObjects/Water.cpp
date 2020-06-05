@@ -20,7 +20,7 @@ Water::Water( float speed, int resolution, float size ) : m_speed{ speed } {
     m_material.addSetting( "offset", 0.f );
     m_material.addSetting( "shininess", 20.f );
     m_material.addSetting( "reflectivity", 0.5f );
-    m_material.addSetting( "tileFactor", size / 4.f );
+    m_material.addSetting( "tileFactor", int( size / 4.f ) );
 }
 
 void Water::move( double deltatime ) {

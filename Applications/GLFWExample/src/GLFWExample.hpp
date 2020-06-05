@@ -3,23 +3,26 @@
 //
 #pragma once
 
+#include "GLFWWindow.hpp"
 #include <Core/BaseApplication.hpp>
 #include <Minimal-Engine/Renderers/FrameBuffers/FBO/FBO.hpp>
-#include "GLFWWindow.hpp"
 
-class GLFWExample : public BaseApplication<GLFWWindow> {
-public:
+class GLFWExample : public BaseApplication<GLFWWindow>
+{
+  public:
     GLFWExample();
-    ~GLFWExample() override { APP_INFO("Application closed. Closing window..."); }
+    ~GLFWExample() override { APP_INFO( "Application closed. Closing window..." ); }
 
-    void draw(double deltatime) override;
+    void draw( double deltatime ) override;
 
     void run();
 
-private:
-    void moveCamera(float dt);
+  private:
+    void moveCamera( float dt );
     void loadExampleScene();
 
     LightCollection m_lights;
     Camera m_camera;
+
+    float m_offset;
 };

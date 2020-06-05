@@ -38,7 +38,7 @@ struct TerrainMaterial {
     float minHeight;
     float reflectivity;
     float shininess;
-    float tileFactor;
+    int tileFactor;
 };
 
 struct WaterMaterial {
@@ -53,7 +53,7 @@ struct WaterMaterial {
     float distortionForce;
     float reflectivity;
     float shininess;
-    float tileFactor;
+    int tileFactor;
 };
 
 struct PointLight {

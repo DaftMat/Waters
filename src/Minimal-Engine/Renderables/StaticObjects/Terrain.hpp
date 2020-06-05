@@ -38,6 +38,10 @@ class ENGINE_API Terrain : public Renderable
         return glm::translate( glm::mat4{ 1.f }, m_position );
     }
 
+    [[nodiscard]] glm::vec3& position() { return m_position; }
+
+    [[nodiscard]] const glm::vec3& position() const { return m_position; }
+
     void addTextureLayer( const TextureLayer& textureLayer );
 
   private:

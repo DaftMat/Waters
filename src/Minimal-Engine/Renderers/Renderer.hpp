@@ -42,6 +42,14 @@ class Renderer
 
     [[nodiscard]] const WaterRenderer& waterRenderer() const { return *m_waterRenderer; }
 
+    [[nodiscard]] const Terrain& terrain( int index ) const { return m_terrains[index]; }
+
+    [[nodiscard]] Terrain& terrain( int index ) { return m_terrains[index]; }
+
+    [[nodiscard]] const Water& water( int index ) const { return m_waters[index]; }
+
+    [[nodiscard]] Water& water( int index ) { return m_waters[index]; }
+
     [[nodiscard]] const FBO& screenFBO() const { return m_renderPass->resultFBO(); }
 
   private:

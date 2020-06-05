@@ -24,10 +24,10 @@ void Terrain::init( float size ) {
     m_material.addSetting( "numLayers", 0 );
     m_material.addSetting( "shininess", 1.f );
     m_material.addSetting( "reflectivity", 0.01f );
-    m_material.addSetting( "tileFactor", size );
+    m_material.addSetting( "tileFactor", int( size ) );
     addTextureLayer( TextureLayer( "resources/textures/mudwater.jpg", 0.f, 0.15f ) );
-    addTextureLayer( TextureLayer( "resources/textures/mud.png", 0.3f, 0.3f ) );
-    addTextureLayer( TextureLayer( "resources/textures/grass.png", 0.4f, 0.2f ) );
+    addTextureLayer( TextureLayer( "resources/textures/mud.png", 0.5f, 0.3f ) );
+    addTextureLayer( TextureLayer( "resources/textures/grass.png", 0.6f, 0.2f ) );
     // addTextureLayer(TextureLayer("resources/textures/snow.jpg", 0.75f, 0.15f));
 }
 
