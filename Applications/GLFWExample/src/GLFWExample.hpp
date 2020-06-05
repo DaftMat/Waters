@@ -3,9 +3,11 @@
 //
 #pragma once
 
-#include "GLFWWindow.hpp"
 #include <Core/BaseApplication.hpp>
 #include <Minimal-Engine/Renderers/FrameBuffers/FBO/FBO.hpp>
+#include <Core/Log.hpp>
+
+#include "GLFWWindow.hpp"
 
 class GLFWExample : public BaseApplication<GLFWWindow>
 {
