@@ -23,6 +23,8 @@ Renderer::Renderer( int width,
         new StaticShader( "shaders/blinnphong.vert.glsl", "shaders/blinnphong.frag.glsl" ) );
     m_waterRenderer = std::make_unique<WaterRenderer>(
         new StaticShader( "shaders/blinnphong.vert.glsl", "shaders/blinnphong.frag.glsl" ) );
+    m_objectRenderer = std::make_unique<ObjectRenderer>(
+            new StaticShader( "shaders/blinnphong.vert.glsl", "shaders/blinnphong.frag.glsl" ) );
 
     m_renderPass = std::make_unique<MultiSamplePass>( 1920, 1080, 32 );
 
@@ -46,6 +48,11 @@ void Renderer::render( const LightCollection& lights, const Camera& camera, doub
         glm::perspective( camera.getFov(), float( m_width ) / float( m_height ), m_near, m_far );
 
     enableClipDistance();
+
+    m_waterRenderer->refractionFBO().prepare(); /// to refraction buffer
+    clearGL();
+    renderScene( view, proj, lights, glm::vec4{ 0.f, -1.f, 0.f, 0.25f } );
+
     m_waterRenderer->reflectionFBO().prepare(); /// to reflection buffer
     clearGL();
     /// flip camera for reflections
@@ -53,11 +60,8 @@ void Renderer::render( const LightCollection& lights, const Camera& camera, doub
     reflectionCamera.flip();
     renderScene( reflectionCamera.getViewMatrix(), proj, lights, glm::vec4{ 0.f, 1.f, 0.f, 0.f } );
 
-    m_waterRenderer->refractionFBO().prepare(); /// to refraction buffer
-    clearGL();
-    renderScene( view, proj, lights, glm::vec4{ 0.f, -1.f, 0.f, 1.f } );
-
     disableClipDistance();
+
     m_renderPass->prepare(); /// to the screen buffer
     clearGL();
     /// Scene
@@ -88,8 +92,8 @@ void Renderer::initGL() {
 }
 
 void Renderer::clearGL() const {
-    glClearColor( m_skyColor.r, m_skyColor.g, m_skyColor.b, 1.f );
     glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
+    glClearColor( m_skyColor.r, m_skyColor.g, m_skyColor.b, 1.f );
 }
 
 void Renderer::renderScene( const glm::mat4& view,
@@ -103,4 +107,12 @@ void Renderer::renderScene( const glm::mat4& view,
     if ( glm::length( clipPlane ) > 0 ) m_terrainRenderer->setClipPlane( clipPlane );
     m_terrainRenderer->render( m_terrains, lights );
     m_terrainRenderer->unbind();
+
+    m_objectRenderer->prepare();
+    m_objectRenderer->loadMatrices(view, proj);
+    m_objectRenderer->loadFog(m_fogDensity, m_fogGradient);
+    m_objectRenderer->loadSky(m_skyColor);
+    if (glm::length(clipPlane) > 0) m_objectRenderer->setClipPlane(clipPlane);
+    m_objectRenderer->render(m_objects, lights);
+    m_objectRenderer->unbind();
 }

@@ -13,6 +13,7 @@ class ENGINE_API Loader
   public:
     static Mesh loadMesh( const std::vector<Mesh::Vertex>& vertices,
                           const std::vector<GLuint>& indices );
+    static Mesh loadMesh( const std::string &filePath);
     static Texture loadTexture( const std::string& name, const std::string& path );
     static void clean();
 

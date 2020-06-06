@@ -12,6 +12,7 @@
 #include <Minimal-Engine/Renderers/EntityRenderers/TerrainRenderer.hpp>
 #include <Minimal-Engine/Renderers/EntityRenderers/WaterRenderer.hpp>
 #include <Minimal-Engine/Renderers/FrameBuffers/MultiPass/MultiSamplePass.hpp>
+#include <Minimal-Engine/Renderers/EntityRenderers/ObjectRenderer.hpp>
 
 class Renderer
 {
@@ -22,7 +23,7 @@ class Renderer
                        float far                 = 300.f,
                        float fogDensity          = 0.007f,
                        float fogGradient         = 1.5f,
-                       const glm::vec3& skyColor = { 0.49f, 0.89f, 0.98f } );
+                       const glm::vec3& skyColor = glm::vec3 { 0.f } );
 
     void prepare() const;
 
@@ -31,6 +32,8 @@ class Renderer
     void addTerrain( const Terrain& terrain ) { m_terrains.push_back( terrain ); }
 
     void addWater( const Water& water ) { m_waters.push_back( water ); }
+
+    void addObject( const Object& object ) { m_objects.push_back(object); }
 
     void resize( int width, int height );
 
@@ -42,6 +45,8 @@ class Renderer
 
     [[nodiscard]] const WaterRenderer& waterRenderer() const { return *m_waterRenderer; }
 
+    [[nodiscard]] const ObjectRenderer& objectRenderer() const { return *m_objectRenderer; }
+
     [[nodiscard]] const Terrain& terrain( int index ) const { return m_terrains[index]; }
 
     [[nodiscard]] Terrain& terrain( int index ) { return m_terrains[index]; }
@@ -50,7 +55,15 @@ class Renderer
 
     [[nodiscard]] Water& water( int index ) { return m_waters[index]; }
 
+    [[nodiscard]] const Object& object( int index ) const { return m_objects[index]; }
+
+    [[nodiscard]] Object& object( int index ) { return m_objects[index]; }
+
     [[nodiscard]] const FBO& screenFBO() const { return m_renderPass->resultFBO(); }
+
+    [[nodiscard]] const glm::vec3 &skyColor() const { return m_skyColor; }
+
+    [[nodiscard]] glm::vec3 &skyColor() { return m_skyColor; }
 
   private:
     static void initGL();
@@ -64,9 +77,11 @@ class Renderer
 
     std::unique_ptr<TerrainRenderer> m_terrainRenderer{ nullptr };
     std::unique_ptr<WaterRenderer> m_waterRenderer{ nullptr };
+    std::unique_ptr<ObjectRenderer> m_objectRenderer{nullptr};
 
     std::vector<Terrain> m_terrains;
     std::vector<Water> m_waters;
+    std::vector<Object> m_objects;
 
     std::unique_ptr<MultiSamplePass> m_renderPass{ nullptr };
 

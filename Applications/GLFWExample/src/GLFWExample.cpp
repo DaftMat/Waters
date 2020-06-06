@@ -7,6 +7,7 @@
 #include <Minimal-Engine/Geometry/Primitives.hpp>
 #include <Minimal-Engine/Material/PerlinNoise/Noise.hpp>
 #include <iostream>
+#include <Core/Random.hpp>
 
 GLFWExample::GLFWExample() {
     init( 1600, 900 );
@@ -44,11 +45,12 @@ void GLFWExample::moveCamera( float dt ) {
 void GLFWExample::loadExampleScene() {
     APP_INFO( "Loading example scene..." );
     auto fun = []( float h ) { return ( 4.f * ( h - 0.5f ) * 2.f ) - 1.f; };
-    Noise::init( 120, 4, 0.4f, 2.f, glm::vec3{ 0.f, 0.f, 0.f }, new Perlin( 128 ) );
+    Noise::init( 128, 6, 0.4f, 2.f, glm::vec3{ 0.f, 0.f, 0.f }, new Perlin( 128 ) );
 
     HeightMap hmap( {}, fun );
     float size = 10.f;
     int dim = 7;
+    int indexTree = 0;
     for ( int i = 0; i < dim; ++i )
     {
         for ( int j = 0; j < dim; ++j )
@@ -62,19 +64,23 @@ void GLFWExample::loadExampleScene() {
             m_renderer->terrain( index ).position() = glm::vec3{ pos.x, 0.f, pos.y };
             m_renderer->addWater( Water( 0.03f, 4, size ) );
             m_renderer->water( index ).position() = glm::vec3{ pos.x, 0.f, pos.y };
+
+            for (int k = 0 ; k < Random::get(0, 10) ; ++k) {
+                glm::vec2 coords = {
+                        Random::get(pos.x - size, pos.x + size),
+                        Random::get(pos.y - size, pos.y + size)
+                };
+                auto h = m_renderer->terrain(index).getHeight(coords.x, coords.y);
+                if (h > 0.f) {
+                    m_renderer->addObject(Object(Loader::loadMesh("resources/objects/tree.obj")));
+                    m_renderer->object(indexTree).setPosition(glm::vec3{coords.x, h - 0.25f, coords.y});
+                    m_renderer->object(indexTree).setScale(glm::vec3{Random::get(1.5f, 2.f)});
+                    m_renderer->object(indexTree).addAlbedoTexture("resources/textures/tree.png");
+                    indexTree++;
+                }
+            }
         }
     }
-
-    //hmap             = HeightMap( Noise::generate(), fun );
-    //m_renderer->addTerrain( Terrain( hmap, size ) );
-    //m_renderer->terrain( 0 ).position() = glm::vec3{ 0.f };
-    //m_renderer->addTerrain( Terrain( 65, 1.f ) );
-    //float h = m_renderer ->terrain(0).getHeight(7.f, 5.f);
-    //m_renderer->terrain( 1 ).position() = glm::vec3{ 7.f, h, 5.f };
-    //m_renderer->addWater( Water( 0.03f, 4, size ) );
-    //m_renderer->water( 0 ).position() = glm::vec3{ 0.f };
-
-    //APP_DEBUG("Height at (2.5,2.5) : {0}", m_renderer->terrain(0).getHeight(4.f, 4.f));
 
     m_quadRenderer->addQuad( Quad( -1.f, 1.f, 2.f, 2.f ) ); // screen
 

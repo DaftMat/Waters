@@ -5,7 +5,7 @@
 
 WaterRenderer::WaterRenderer( StaticShader* shader ) : EntityRenderer( shader ) {
     m_reflectionFbo = std::make_unique<FBO>(
-        1280, 720, 1, FBO::Attachments{ FBO::Attachments::TEXTURE, 1, FBO::Attachments::NONE } );
+        1280, 720, 1, FBO::Attachments{ FBO::Attachments::TEXTURE, 1, FBO::Attachments::BUFFER } );
     m_refractionFbo = std::make_unique<FBO>(
         1280, 720, 1, FBO::Attachments{ FBO::Attachments::TEXTURE, 1, FBO::Attachments::TEXTURE } );
 }
