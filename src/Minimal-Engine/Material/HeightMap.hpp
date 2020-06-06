@@ -38,6 +38,8 @@ class ENGINE_API HeightMap
 
     [[nodiscard]] auto getFun() const { return m_fun; }
 
+    [[nodiscard]] std::vector<float> getMap() const { return m_map; }
+
   private:
     std::vector<float> m_map;
     int m_size;

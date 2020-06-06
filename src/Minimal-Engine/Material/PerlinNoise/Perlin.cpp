@@ -6,16 +6,16 @@
 #include <Core/Random.hpp>
 
 Perlin::Perlin( int size, int seed ) {
-    if ( size < 257 ) size = 257;
+    if ( size < 65 ) size = 65;
     Random::seed( seed );
     for ( int i = 0; i < size; ++i )
-        p.push_back( (int)Random::get( 0, 255 ) );
+        p.push_back( (int)Random::get( 0, 63 ) );
 }
 
 float Perlin::noise( float x, float y, float z ) const {
-    int X = (int)glm::floor( x ) & 255;
-    int Y = (int)glm::floor( y ) & 255;
-    int Z = (int)glm::floor( z ) & 255;
+    int X = (int)glm::floor( x ) & 63;
+    int Y = (int)glm::floor( y ) & 63;
+    int Z = (int)glm::floor( z ) & 63;
     x -= glm::floor( x );
     y -= glm::floor( y );
     z -= glm::floor( z );

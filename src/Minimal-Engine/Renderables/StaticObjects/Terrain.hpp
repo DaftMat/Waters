@@ -44,10 +44,17 @@ class ENGINE_API Terrain : public Renderable
 
     void addTextureLayer( const TextureLayer& textureLayer );
 
+    [[nodiscard]] float getHeight(float x, float y) const;
+
   private:
     void init( float size );
+    [[nodiscard]] static float barerp( const glm::vec3 &p1, const glm::vec3 &p2, const glm::vec3 &p3, const glm::vec2 &pos );
+    [[nodiscard]] static float mod(float a, float b);
 
     glm::vec3 m_position{ 0.f };
     int m_numLayers{ 0 };
     float m_minHeight, m_maxHeight;
+    HeightMap m_hmap;      //for physics
+    float m_size;
+    int m_resolution;
 };

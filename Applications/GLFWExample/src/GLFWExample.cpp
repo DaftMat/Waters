@@ -44,18 +44,19 @@ void GLFWExample::moveCamera( float dt ) {
 void GLFWExample::loadExampleScene() {
     APP_INFO( "Loading example scene..." );
     auto fun = []( float h ) { return ( 4.f * ( h - 0.5f ) * 2.f ) - 1.f; };
-    Noise::init( 256, 4, 0.4f, 2.f, glm::vec3{ 0.f, 0.f, 0.f }, new Perlin( 512 ) );
+    Noise::init( 120, 4, 0.4f, 2.f, glm::vec3{ 0.f, 0.f, 0.f }, new Perlin( 128 ) );
 
     HeightMap hmap( {}, fun );
     float size = 10.f;
-    for ( int i = 0; i < 7; ++i )
+    int dim = 7;
+    for ( int i = 0; i < dim; ++i )
     {
-        for ( int j = 0; j < 7; ++j )
+        for ( int j = 0; j < dim; ++j )
         {
-            glm::vec2 pos{ float( i - 3 ) * 2.f * size, float( j - 3 ) * 2.f * size };
-            int index        = i * 7 + j;
-            Noise::xOffset() = float( i * 511 );
-            Noise::yOffset() = float( j * 511 );
+            glm::vec2 pos{ float( i - int(glm::floor(float(dim)/2.f))) * 2.f * size, float( j - int(glm::floor(float(dim)/2.f)) ) * 2.f * size };
+            int index        = i * dim + j;
+            Noise::xOffset() = float( i * 127 );
+            Noise::yOffset() = float( j * 127 );
             hmap             = HeightMap( Noise::generate(), fun );
             m_renderer->addTerrain( Terrain( hmap, size ) );
             m_renderer->terrain( index ).position() = glm::vec3{ pos.x, 0.f, pos.y };
@@ -63,6 +64,17 @@ void GLFWExample::loadExampleScene() {
             m_renderer->water( index ).position() = glm::vec3{ pos.x, 0.f, pos.y };
         }
     }
+
+    //hmap             = HeightMap( Noise::generate(), fun );
+    //m_renderer->addTerrain( Terrain( hmap, size ) );
+    //m_renderer->terrain( 0 ).position() = glm::vec3{ 0.f };
+    //m_renderer->addTerrain( Terrain( 65, 1.f ) );
+    //float h = m_renderer ->terrain(0).getHeight(7.f, 5.f);
+    //m_renderer->terrain( 1 ).position() = glm::vec3{ 7.f, h, 5.f };
+    //m_renderer->addWater( Water( 0.03f, 4, size ) );
+    //m_renderer->water( 0 ).position() = glm::vec3{ 0.f };
+
+    //APP_DEBUG("Height at (2.5,2.5) : {0}", m_renderer->terrain(0).getHeight(4.f, 4.f));
 
     m_quadRenderer->addQuad( Quad( -1.f, 1.f, 2.f, 2.f ) ); // screen
 
