@@ -25,14 +25,14 @@ class ENGINE_API Terrain : public Renderable
      * @param resolution - number of vertices on the terrain's border.
      * @param size - size of the terrain in the world.
      */
-    explicit Terrain( int resolution, float size = 10.f );
+    explicit Terrain( int resolution, float size = 10.f);
 
     /** Constructor for terrain with height map.
      *
      * @param hmap - terrain's height map - see HeightMap .
      * @param size - size of the terrain in the world.
      */
-    explicit Terrain( const HeightMap& hmap, float size = 10.f );
+    explicit Terrain( const HeightMap& hmap, float size = 10.f, int lod = 0  );
 
     [[nodiscard]] glm::mat4 model() const override {
         return glm::translate( glm::mat4{ 1.f }, m_position );
@@ -46,6 +46,8 @@ class ENGINE_API Terrain : public Renderable
 
     [[nodiscard]] float getHeight(float x, float y) const;
 
+    void setLod(int lod);
+
   private:
     void init( float size );
     [[nodiscard]] static float barerp( const glm::vec3 &p1, const glm::vec3 &p2, const glm::vec3 &p3, const glm::vec2 &pos );
@@ -57,4 +59,5 @@ class ENGINE_API Terrain : public Renderable
     HeightMap m_hmap;      //for physics
     float m_size;
     int m_resolution;
+    int m_lod;
 };

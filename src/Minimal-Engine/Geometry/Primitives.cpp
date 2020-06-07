@@ -6,11 +6,17 @@
 
 Mesh Primitives::plane( int resolution, float size ) {
     HeightMap hmap( resolution );
-    return plane( hmap, size );
+    return plane( hmap, size, 0 );
 }
 
-Mesh Primitives::plane( const HeightMap& hmap, float size ) {
+Mesh Primitives::plane( const HeightMap& hmap, float size, int lod ) {
     auto resolution = hmap.size();
+
+    if (lod < 0) lod = 0;
+    if (lod > 6) lod = 6;
+    lod = lod == 0 ? 1 : 2 * lod;
+    resolution = ((resolution - 1) / lod) + 1;
+
     std::vector<Mesh::Vertex> vertices;
     std::vector<GLuint> indices;
     Mesh::Vertex vertex{};
@@ -18,14 +24,14 @@ Mesh Primitives::plane( const HeightMap& hmap, float size ) {
     glm::vec3 axisA{ size, 0.f, 0.f };
     glm::vec3 axisB{ 0.f, 0.f, size };
 
-    for ( GLuint y = 0; y < resolution; ++y )
+    for ( GLuint y = 0; y < resolution; y++ )
     {
-        for ( GLuint x = 0; x < resolution; ++x )
+        for ( GLuint x = 0; x < resolution; x++ )
         {
             /// Vertex
-            GLuint index      = x + y * resolution;
+            GLuint index = y * resolution + x;
             glm::vec2 percent = glm::vec2( x, y ) / ( float( resolution ) - 1.f );
-            glm::vec3 point   = glm::vec3{ 0.f, hmap( x, y ), 0.f } /// apply height map.
+            glm::vec3 point   = glm::vec3{ 0.f, hmap( x * lod, y * lod ), 0.f } /// apply height map.
                               + ( percent.x - 0.5f ) * 2.f * axisA +
                               ( percent.y - 0.5f ) * 2.f * axisB;
 
@@ -54,7 +60,7 @@ Mesh Primitives::plane( const HeightMap& hmap, float size ) {
         for ( int x = 0; x < resolution; ++x )
         {
             /// add neighbor triangles
-            int index = x + y * resolution;
+            GLuint index = y * resolution + x;
             std::vector<GLuint> inds{};
             if ( x > 0 && y > 0 )
             {
@@ -92,7 +98,7 @@ Mesh Primitives::plane( const HeightMap& hmap, float size ) {
             /// calculate mean of all neighbor triangles' normals
             for ( int i = 0; i < inds.size(); i += 3 )
             {
-                glm::vec<3, int> triangle{ inds[i], inds[i + 1], inds[i + 2] };
+                glm::vec<3, GLuint> triangle{ inds[i], inds[i + 1], inds[i + 2] };
                 if ( triangle.x == index )
                 {
                     auto a              = glm::normalize( vertices[triangle.z].position -

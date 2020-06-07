@@ -11,8 +11,8 @@ Terrain::Terrain( int resolution, float size ) : m_hmap {std::vector<float>(reso
     init( size );
 }
 
-Terrain::Terrain( const HeightMap& hmap, float size ) : m_hmap { hmap }, m_size {size}, m_resolution { hmap.size() } {
-    m_mesh      = Primitives::plane( hmap, size );
+Terrain::Terrain( const HeightMap& hmap, float size, int lod ) : m_hmap { hmap }, m_size {size}, m_resolution { hmap.size() }, m_lod {lod} {
+    m_mesh      = Primitives::plane( hmap, size, lod );
     m_minHeight = hmap.getFun()( 0.f );
     m_maxHeight = hmap.getFun()( 1.f );
     init( size );
@@ -86,4 +86,9 @@ float Terrain::mod(float a, float b) {
         ret = -ret;
 
     return ret;
+}
+
+void Terrain::setLod(int lod) {
+    m_lod = lod;
+    m_mesh = Primitives::plane(m_hmap, m_size, m_lod);
 }

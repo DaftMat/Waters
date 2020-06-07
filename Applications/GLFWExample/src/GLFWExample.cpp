@@ -45,10 +45,10 @@ void GLFWExample::moveCamera( float dt ) {
 void GLFWExample::loadExampleScene() {
     APP_INFO( "Loading example scene..." );
     auto fun = []( float h ) { return ( 4.f * ( h - 0.5f ) * 2.f ) - 1.f; };
-    Noise::init( 128, 6, 0.4f, 2.f, glm::vec3{ 0.f, 0.f, 0.f }, new Perlin( 128 ) );
+    Noise::init( 120, 6, 0.4f, 2.f, glm::vec3{ 0.f, 0.f, 0.f }, new Perlin( 241 ) );
 
     HeightMap hmap( {}, fun );
-    float size = 10.f;
+    float size = 20.f;
     int dim = 7;
     int indexTree = 0;
     for ( int i = 0; i < dim; ++i )
@@ -57,10 +57,10 @@ void GLFWExample::loadExampleScene() {
         {
             glm::vec2 pos{ float( i - int(glm::floor(float(dim)/2.f))) * 2.f * size, float( j - int(glm::floor(float(dim)/2.f)) ) * 2.f * size };
             int index        = i * dim + j;
-            Noise::xOffset() = float( i * 127 );
-            Noise::yOffset() = float( j * 127 );
+            Noise::xOffset() = float( i * 240 );
+            Noise::yOffset() = float( j * 240 );
             hmap             = HeightMap( Noise::generate(), fun );
-            m_renderer->addTerrain( Terrain( hmap, size ) );
+            m_renderer->addTerrain( Terrain( hmap, size, 0 ) );
             m_renderer->terrain( index ).position() = glm::vec3{ pos.x, 0.f, pos.y };
             m_renderer->addWater( Water( 0.03f, 4, size ) );
             m_renderer->water( index ).position() = glm::vec3{ pos.x, 0.f, pos.y };
