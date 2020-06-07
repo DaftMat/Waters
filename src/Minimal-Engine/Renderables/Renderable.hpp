@@ -31,6 +31,8 @@ class ENGINE_API Renderable
 
     [[nodiscard]] const Mesh& mesh() const { return m_mesh; }
 
+    Mesh& mesh() { return m_mesh; }
+
     [[nodiscard]] const Material& material() const { return m_material; };
 
     Material& material() { return m_material; };

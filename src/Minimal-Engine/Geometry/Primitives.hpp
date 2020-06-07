@@ -15,4 +15,5 @@ struct Triangle {
 
 Mesh plane( int resolution = 128, float size = 1.f );
 Mesh plane( const HeightMap& hmap, float size = 1.f );
+Mesh cube(int resolution = 10, float size = 1.f);
 } // namespace Primitives

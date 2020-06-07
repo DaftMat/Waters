@@ -25,6 +25,7 @@ Renderer::Renderer( int width,
         new StaticShader( "shaders/blinnphong.vert.glsl", "shaders/blinnphong.frag.glsl" ) );
     m_objectRenderer = std::make_unique<ObjectRenderer>(
             new StaticShader( "shaders/blinnphong.vert.glsl", "shaders/blinnphong.frag.glsl" ) );
+    m_skyRenderer = std::make_unique<SkyRenderer>("resources/textures/bluecloud/", far / 2.f);
 
     m_renderPass = std::make_unique<MultiSamplePass>( 1920, 1080, 32 );
 
@@ -70,7 +71,7 @@ void Renderer::render( const LightCollection& lights, const Camera& camera, doub
     m_waterRenderer->prepare();
     m_waterRenderer->loadMatrices( view, proj );
     m_waterRenderer->loadFog( m_fogDensity, m_fogGradient );
-    m_waterRenderer->loadSky( m_skyColor );
+    m_waterRenderer->loadSkybox( m_skyRenderer->skybox() );
     m_waterRenderer->render( m_waters, lights, deltatime );
     m_waterRenderer->unbind();
     /// finished
@@ -103,7 +104,7 @@ void Renderer::renderScene( const glm::mat4& view,
     m_terrainRenderer->prepare();
     m_terrainRenderer->loadMatrices( view, proj );
     m_terrainRenderer->loadFog( m_fogDensity, m_fogGradient );
-    m_terrainRenderer->loadSky( m_skyColor );
+    m_terrainRenderer->loadSkybox( m_skyRenderer->skybox() );
     if ( glm::length( clipPlane ) > 0 ) m_terrainRenderer->setClipPlane( clipPlane );
     m_terrainRenderer->render( m_terrains, lights );
     m_terrainRenderer->unbind();
@@ -111,8 +112,17 @@ void Renderer::renderScene( const glm::mat4& view,
     m_objectRenderer->prepare();
     m_objectRenderer->loadMatrices(view, proj);
     m_objectRenderer->loadFog(m_fogDensity, m_fogGradient);
-    m_objectRenderer->loadSky(m_skyColor);
+    m_objectRenderer->loadSkybox(m_skyRenderer->skybox());
     if (glm::length(clipPlane) > 0) m_objectRenderer->setClipPlane(clipPlane);
     m_objectRenderer->render(m_objects, lights);
     m_objectRenderer->unbind();
+
+    m_skyRenderer->prepare();
+    m_skyRenderer->loadMatrices(view, proj);
+    m_skyRenderer->render();
+    m_skyRenderer->unbind();
+}
+
+void Renderer::update(float deltatime) {
+    m_skyRenderer->rotate(deltatime);
 }

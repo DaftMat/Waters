@@ -13,6 +13,7 @@
 #include <Minimal-Engine/Renderers/EntityRenderers/WaterRenderer.hpp>
 #include <Minimal-Engine/Renderers/FrameBuffers/MultiPass/MultiSamplePass.hpp>
 #include <Minimal-Engine/Renderers/EntityRenderers/ObjectRenderer.hpp>
+#include <Minimal-Engine/Renderers/EntityRenderers/SkyRenderer.hpp>
 
 class Renderer
 {
@@ -20,10 +21,10 @@ class Renderer
     explicit Renderer( int width,
                        int height,
                        float near                = 0.1f,
-                       float far                 = 300.f,
+                       float far                 = 1000.f,
                        float fogDensity          = 0.007f,
                        float fogGradient         = 1.5f,
-                       const glm::vec3& skyColor = glm::vec3 { 0.f } );
+                       const glm::vec3& skyColor = { 0.49f, 0.89f, 0.98f } );
 
     void prepare() const;
 
@@ -65,6 +66,8 @@ class Renderer
 
     [[nodiscard]] glm::vec3 &skyColor() { return m_skyColor; }
 
+    void update(float deltatime);
+
   private:
     static void initGL();
     void clearGL() const;
@@ -78,6 +81,7 @@ class Renderer
     std::unique_ptr<TerrainRenderer> m_terrainRenderer{ nullptr };
     std::unique_ptr<WaterRenderer> m_waterRenderer{ nullptr };
     std::unique_ptr<ObjectRenderer> m_objectRenderer{nullptr};
+    std::unique_ptr<SkyRenderer> m_skyRenderer{nullptr};
 
     std::vector<Terrain> m_terrains;
     std::vector<Water> m_waters;

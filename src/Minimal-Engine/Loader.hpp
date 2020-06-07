@@ -15,6 +15,7 @@ class ENGINE_API Loader
                           const std::vector<GLuint>& indices );
     static Mesh loadMesh( const std::string &filePath);
     static Texture loadTexture( const std::string& name, const std::string& path );
+    static Texture loadCubeMap( const std::string& name, const std::array<std::string, 6> &paths);
     static void clean();
 
   private:

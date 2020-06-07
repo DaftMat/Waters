@@ -7,6 +7,6 @@
 
 Texture::Texture( std::string name, GLuint id ) : m_name{ std::move( name ) }, m_id{ id } {}
 
-void Texture::bind() const {
-    glBindTexture( GL_TEXTURE_2D, m_id );
+void Texture::bind(GLenum textureType) const {
+    glBindTexture( textureType, m_id );
 }

@@ -23,7 +23,7 @@ void StaticShader::setMaterial( const Material& material, const std::string& nam
             setBool( name + "." + setting.name, setting.data.boolData );
             break;
         case Material::Setting::Type::INT:
-            setInt( name + "." + setting.name, setting.data.boolData );
+            setInt( name + "." + setting.name, setting.data.intData );
             break;
         }
     }
@@ -49,4 +49,8 @@ void StaticShader::clearLights() {
     m_numDirectLights = 0;
     setInt( "numPointLights", m_numPointLights );
     setInt( "numDirectLights", m_numDirectLights );
+}
+
+void StaticShader::setSkybox(const Skybox &skybox) const {
+    setMaterial(skybox.material(), "skybox");
 }

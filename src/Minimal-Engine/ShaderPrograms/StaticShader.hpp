@@ -7,6 +7,7 @@
 #include <Minimal-Engine/Material/Material.hpp>
 #include <Minimal-Engine/Renderables/Lights/DirectLight.hpp>
 #include <Minimal-Engine/Renderables/Lights/PointLight.hpp>
+#include <Minimal-Engine/Renderables/Skyboxes/Skybox.hpp>
 
 class ENGINE_API StaticShader : public ShaderProgram
 {
@@ -21,6 +22,8 @@ class ENGINE_API StaticShader : public ShaderProgram
     void addLight( const DirectLight& light );
 
     void clearLights();
+
+    void setSkybox( const Skybox &skybox ) const;
 
   private:
     GLuint m_numPointLights{ 0 };

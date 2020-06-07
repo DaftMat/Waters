@@ -129,3 +129,51 @@ Mesh Primitives::plane( const HeightMap& hmap, float size ) {
 
     return Loader::loadMesh( vertices, indices );
 }
+
+Mesh Primitives::cube(int resolution, float size) {
+    std::vector<glm::vec3> faces {
+        glm::vec3 { -1.f,  0.f,  0.f }, /// right
+        glm::vec3 {  1.f,  0.f,  0.f }, /// left
+        glm::vec3 {  0.f,  1.f,  0.f }, /// top
+        glm::vec3 {  0.f, -1.f,  0.f }, /// bottom
+        glm::vec3 {  0.f,  0.f,  1.f }, /// back
+        glm::vec3 {  0.f,  0.f, -1.f }  /// front
+    };
+    std::vector<Mesh::Vertex> vertices;
+    std::vector<GLuint> indices;
+    Mesh::Vertex vertex{};
+
+    for (int i = 0 ; i < 6 ; ++i) {
+        glm::vec3 axisA{faces[i].y, faces[i].z, faces[i].x};
+        glm::vec3 axisB = glm::normalize(glm::cross(faces[i], axisA));
+        int indexOffset = i * resolution * resolution;
+        for (GLuint y = 0; y < resolution; ++y) {
+            for (GLuint x = 0; x < resolution; ++x) {
+                /// Vertex
+                GLuint index = indexOffset + x + y * resolution;
+                glm::vec2 percent = glm::vec2(x, y) / (float(resolution) - 1.f);
+                glm::vec3 point = faces[i] * size +
+                        +(percent.x - 0.5f) * 2.f * axisA * size +
+                        (percent.y - 0.5f) * 2.f * axisB * size;
+
+                vertex.position = point;
+                vertex.normal = faces[i];
+                vertex.texCoords = percent;
+                vertices.push_back(vertex);
+
+                /// Triangles
+                if (x != resolution - 1 && y != resolution - 1) {
+                    indices.push_back(index);
+                    indices.push_back(index + resolution + 1);
+                    indices.push_back(index + resolution);
+
+                    indices.push_back(index);
+                    indices.push_back(index + 1);
+                    indices.push_back(index + resolution + 1);
+                }
+            }
+        }
+    }
+
+    return Loader::loadMesh(vertices, indices);
+}

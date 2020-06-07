@@ -25,6 +25,8 @@ class ENGINE_API Mesh
     Mesh( GLuint vao, GLuint numVertex ) : m_vao{ vao }, m_numVertex{ numVertex } {}
     ~Mesh() = default;
 
+    Mesh(const Mesh &mesh) = default;
+
     void prepare() const;
 
     void render( GLuint type ) const;

@@ -89,6 +89,7 @@ void GLFWExample::loadExampleScene() {
 }
 
 void GLFWExample::draw( double deltatime ) {
+    m_renderer->update(float(deltatime));
     m_renderer->prepare();
     m_renderer->render( m_lights, m_camera, deltatime );
 

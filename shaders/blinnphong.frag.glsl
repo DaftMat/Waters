@@ -83,6 +83,9 @@ struct GenericMaterial {
     vec4 specular;
 };
 
+struct Skybox {
+    samplerCube cubeMap;
+};
 
 in vec3 fragPos;
 in vec3 fragNormal;
@@ -105,6 +108,7 @@ uniform ObjectMaterial objectMat;
 uniform TerrainMaterial terrainMat;
 uniform WaterMaterial waterMat;
 uniform vec3 skyColor;
+uniform Skybox skybox;
 
 vec3 shade(PointLight light, vec3 normal, GenericMaterial mat);
 vec3 shade(DirectLight light, vec3 normal, GenericMaterial mat);
@@ -159,7 +163,8 @@ void main() {
     }
     fragColor = vec4(color, mat.albedo.a);
     // fog
-    fragColor = mix(vec4(skyColor, 1.0), fragColor, visibility);
+    //vec4 sky = texture(skybox.cubeMap, normalize(-toCamera))/255.f;
+    //fragColor = mix(vec4(sky.rgb, 1.0), fragColor, 0.1);
 }
 
 vec3 shade(PointLight light, vec3 normal, GenericMaterial mat) {

@@ -24,7 +24,7 @@ class Texture
     /** Binds the texture to the current opengl GL_TEXTURE
      *
      */
-    void bind() const;
+    void bind(GLenum textureType = GL_TEXTURE_2D) const;
 
     /** name getter.
      *
