@@ -25,6 +25,4 @@ class GLFWExample : public BaseApplication<GLFWWindow>
 
     LightCollection m_lights;
     Camera m_camera;
-
-    float m_offset;
 };

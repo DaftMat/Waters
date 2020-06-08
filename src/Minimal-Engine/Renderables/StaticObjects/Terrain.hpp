@@ -25,7 +25,7 @@ class ENGINE_API Terrain : public Renderable
      * @param resolution - number of vertices on the terrain's border.
      * @param size - size of the terrain in the world.
      */
-    explicit Terrain( int resolution, float size = 10.f);
+    explicit Terrain( int resolution = 128, float size = 10.f);
 
     /** Constructor for terrain with height map.
      *

@@ -3,7 +3,6 @@
 //
 #include "Renderer.hpp"
 #include <Core/Log.hpp>
-#include <Minimal-Engine/Loader.hpp>
 
 Renderer::Renderer( int width,
                     int height,
@@ -11,7 +10,9 @@ Renderer::Renderer( int width,
                     float far,
                     float fogDensity,
                     float fogGradient,
+                    float terrainSize,
                     const glm::vec3& skyColor ) :
+    m_terrains{terrainSize},
     m_width{ width },
     m_height{ height },
     m_near{ near },
@@ -107,7 +108,7 @@ void Renderer::renderScene( const glm::mat4& view,
     m_terrainRenderer->loadFog( m_fogDensity, m_fogGradient );
     m_terrainRenderer->loadSkybox( m_skyRenderer->skybox() );
     if ( glm::length( clipPlane ) > 0 ) m_terrainRenderer->setClipPlane( clipPlane );
-    m_terrainRenderer->render( m_terrains, lights );
+    m_terrainRenderer->render( m_terrains.terrains(), lights );
     m_terrainRenderer->unbind();
 
     m_objectRenderer->prepare();

@@ -15,6 +15,7 @@
 #include <Minimal-Engine/Renderers/EntityRenderers/ObjectRenderer.hpp>
 #include <Minimal-Engine/Renderers/EntityRenderers/SkyRenderer.hpp>
 #include <Minimal-Engine/Renderables/DynamicObjects/Player.hpp>
+#include <Minimal-Engine/Renderables/StaticObjects/TerrainGrid.hpp>
 
 class Renderer
 {
@@ -25,13 +26,14 @@ class Renderer
                        float far                 = 1000.f,
                        float fogDensity          = 0.007f,
                        float fogGradient         = 1.5f,
+                       float terrainSize         = 20.f,
                        const glm::vec3& skyColor = { 0.49f, 0.89f, 0.98f } );
 
     void prepare() const;
 
     void render( const LightCollection& lights, const Camera& camera, double deltatime );
 
-    void addTerrain( const Terrain& terrain ) { m_terrains.push_back( terrain ); }
+    void addTerrain( int x, int y ) { m_terrains.addTerrain( x, y ); }
 
     void addWater( const Water& water ) { m_waters.push_back( water ); }
 
@@ -53,11 +55,11 @@ class Renderer
 
     [[nodiscard]] int numTerrains() const { return m_terrains.size(); }
 
-    [[nodiscard]] const Terrain& terrain( int index ) const { return m_terrains[index]; }
-
-    [[nodiscard]] Terrain& terrain( int index ) { return m_terrains[index]; }
-
     [[nodiscard]] int numWaters() const { return m_waters.size(); }
+
+    [[nodiscard]] const TerrainGrid& terrains() const { return m_terrains; }
+
+    [[nodiscard]] TerrainGrid& terrains() { return m_terrains; }
 
     [[nodiscard]] const Water& water( int index ) const { return m_waters[index]; }
 
@@ -96,7 +98,7 @@ class Renderer
     std::unique_ptr<ObjectRenderer> m_objectRenderer{nullptr};
     std::unique_ptr<SkyRenderer> m_skyRenderer{nullptr};
 
-    std::vector<Terrain> m_terrains;
+    TerrainGrid m_terrains;
     std::vector<Water> m_waters;
     std::vector<Object> m_objects;
 
