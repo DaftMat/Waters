@@ -21,6 +21,9 @@ class ENGINE_API Renderable
     Renderable()          = default;
     virtual ~Renderable() = default;
 
+    bool operator==(const Renderable &other) const { return m_mesh == other.m_mesh; }
+    bool operator==(Renderable &&other) const { return m_mesh == other.m_mesh; }
+
     void prepare() const;
 
     void render( GLuint type ) const;

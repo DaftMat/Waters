@@ -14,10 +14,6 @@
 class ENGINE_API Camera
 {
   public:
-    /** Possible camera movements.
-     *
-     */
-    enum Movement { FRONT, BACK, RIGHT, LEFT, UP, DOWN };
 
     /** Constructor.
      * no roll as this camera won't need it.
@@ -26,9 +22,9 @@ class ENGINE_API Camera
      * @param yaw - horizontal rotation
      * @param pitch - vertical rotation
      */
-    explicit Camera( const glm::vec3& position = { 0.f, 0.f, 3.f },
+    explicit Camera( const glm::vec3& position = { 0.f, 0.f, -3.f },
                      const glm::vec3& worldUp  = { 0.f, 1.f, 0.f },
-                     float yaw                 = -90.f,
+                     float yaw                 = 90.f,
                      float pitch               = 0.f );
 
     /** calculates view matrix.
@@ -65,13 +61,6 @@ class ENGINE_API Camera
      */
     [[nodiscard]] glm::vec3 getViewDirection() const { return m_front; }
 
-    /** keyboard movement processing function.
-     * will alter position.
-     * @param movement - movement to accomplish.
-     * @param dt - delta time.
-     */
-    void processMovement( Movement movement, float dt );
-
     /** mouse scroll movement processing function.
      * will move forward or backward (with the limit of .
      * @param offset - difference between last position and current position of the scroll
@@ -93,8 +82,13 @@ class ENGINE_API Camera
 
     void flip();
 
+    void update(const glm::vec3 &targetPos, float rot);
+
+    void updateYaw(float dt);
+
   private:
     void updateCameraVectors();
+    void updatePosition();
 
     glm::vec3 m_position;
     glm::vec3 m_front;
@@ -103,7 +97,7 @@ class ENGINE_API Camera
     glm::vec3 m_worldUp;
     glm::vec3 m_target;
 
-    float m_yaw, m_pitch, m_dist;
+    float m_baseYaw, m_yaw, m_pitch, m_rot, m_dist;
     float m_velocity, m_sensitivity, m_fov;
 
     glm::vec2 m_mousePosition;

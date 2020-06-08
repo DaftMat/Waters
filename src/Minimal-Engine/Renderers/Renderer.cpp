@@ -3,6 +3,7 @@
 //
 #include "Renderer.hpp"
 #include <Core/Log.hpp>
+#include <Minimal-Engine/Loader.hpp>
 
 Renderer::Renderer( int width,
                     int height,
@@ -114,7 +115,9 @@ void Renderer::renderScene( const glm::mat4& view,
     m_objectRenderer->loadFog(m_fogDensity, m_fogGradient);
     m_objectRenderer->loadSkybox(m_skyRenderer->skybox());
     if (glm::length(clipPlane) > 0) m_objectRenderer->setClipPlane(clipPlane);
+    if (m_initPlayer) m_objects.push_back(m_player);
     m_objectRenderer->render(m_objects, lights);
+    if (m_initPlayer) m_objects.erase(std::remove(m_objects.begin(), m_objects.end(), m_player));
     m_objectRenderer->unbind();
 
     m_skyRenderer->prepare();

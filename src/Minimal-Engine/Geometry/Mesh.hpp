@@ -25,6 +25,9 @@ class ENGINE_API Mesh
     Mesh( GLuint vao, GLuint numVertex ) : m_vao{ vao }, m_numVertex{ numVertex } {}
     ~Mesh() = default;
 
+    bool operator==(const Mesh &other) const { return m_vao == other.m_vao; }
+    bool operator==(Mesh &&other) const { return m_vao == other.m_vao; }
+
     Mesh(const Mesh &mesh) = default;
 
     void prepare() const;

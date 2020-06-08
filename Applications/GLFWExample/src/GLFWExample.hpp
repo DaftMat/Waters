@@ -20,7 +20,7 @@ class GLFWExample : public BaseApplication<GLFWWindow>
     void run();
 
   private:
-    void moveCamera( float dt );
+    void movePlayer( float dt );
     void loadExampleScene();
 
     LightCollection m_lights;

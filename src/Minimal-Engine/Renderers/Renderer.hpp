@@ -14,6 +14,7 @@
 #include <Minimal-Engine/Renderers/FrameBuffers/MultiPass/MultiSamplePass.hpp>
 #include <Minimal-Engine/Renderers/EntityRenderers/ObjectRenderer.hpp>
 #include <Minimal-Engine/Renderers/EntityRenderers/SkyRenderer.hpp>
+#include <Minimal-Engine/Renderables/DynamicObjects/Player.hpp>
 
 class Renderer
 {
@@ -36,6 +37,8 @@ class Renderer
 
     void addObject( const Object& object ) { m_objects.push_back(object); }
 
+    void initPlayer( const Player& player ) { m_player = player; m_initPlayer = true; }
+
     void resize( int width, int height );
 
     [[nodiscard]] int width() const { return m_width; }
@@ -48,17 +51,27 @@ class Renderer
 
     [[nodiscard]] const ObjectRenderer& objectRenderer() const { return *m_objectRenderer; }
 
+    [[nodiscard]] int numTerrains() const { return m_terrains.size(); }
+
     [[nodiscard]] const Terrain& terrain( int index ) const { return m_terrains[index]; }
 
     [[nodiscard]] Terrain& terrain( int index ) { return m_terrains[index]; }
+
+    [[nodiscard]] int numWaters() const { return m_waters.size(); }
 
     [[nodiscard]] const Water& water( int index ) const { return m_waters[index]; }
 
     [[nodiscard]] Water& water( int index ) { return m_waters[index]; }
 
+    [[nodiscard]] int numObjects() const { return m_objects.size(); }
+
     [[nodiscard]] const Object& object( int index ) const { return m_objects[index]; }
 
     [[nodiscard]] Object& object( int index ) { return m_objects[index]; }
+
+    [[nodiscard]] const Player& player() const { return m_player; }
+
+    [[nodiscard]] Player& player() { return m_player; }
 
     [[nodiscard]] const FBO& screenFBO() const { return m_renderPass->resultFBO(); }
 
@@ -86,6 +99,9 @@ class Renderer
     std::vector<Terrain> m_terrains;
     std::vector<Water> m_waters;
     std::vector<Object> m_objects;
+
+    Player m_player{Mesh(0, 0)};
+    bool m_initPlayer{false};
 
     std::unique_ptr<MultiSamplePass> m_renderPass{ nullptr };
 

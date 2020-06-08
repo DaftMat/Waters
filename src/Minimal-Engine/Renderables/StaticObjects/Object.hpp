@@ -83,11 +83,11 @@ class Object : public Renderable
 
     void addSpecularTexture(const std::string &texPath);
 
-  private:
+  protected:
     [[nodiscard]] glm::mat4 translation() const { return glm::translate( glm::mat4{ 1.f }, m_position ); };
     [[nodiscard]] glm::mat4 rotation() const;
     [[nodiscard]] glm::mat4 scale() const { return glm::scale( glm::mat4{ 1.f }, m_scale ); };
-
+  private:
     glm::vec3 m_position;
     glm::vec3 m_rotation;
     glm::vec3 m_scale;

@@ -30,20 +30,36 @@ GLFWExample::GLFWExample() {
     APP_INFO( "Application created." );
 }
 
-void GLFWExample::moveCamera( float dt ) {
-    if ( m_window->isPressed( GLFW_KEY_W ) )
-        m_camera.processMovement( Camera::Movement::FRONT, dt );
-    if ( m_window->isPressed( GLFW_KEY_S ) ) m_camera.processMovement( Camera::Movement::BACK, dt );
-    if ( m_window->isPressed( GLFW_KEY_A ) ) m_camera.processMovement( Camera::Movement::LEFT, dt );
+void GLFWExample::movePlayer(float dt) {
+    if ( m_window->isPressed( GLFW_KEY_W ) ) {
+        m_renderer->player().processMovement( Player::Movement::FRONT, dt );
+        m_camera.updateYaw(dt);
+    }
+    if ( m_window->isPressed( GLFW_KEY_S ) )
+        m_renderer->player().processMovement( Player::Movement::BACK, dt );
+    if ( m_window->isPressed( GLFW_KEY_A ) )
+        m_renderer->player().processMovement( Player::Movement::LEFT, dt );
     if ( m_window->isPressed( GLFW_KEY_D ) )
-        m_camera.processMovement( Camera::Movement::RIGHT, dt );
-    if ( m_window->isPressed( GLFW_KEY_SPACE ) )
-        m_camera.processMovement( Camera::Movement::UP, dt );
-    if ( m_window->isPressed( GLFW_KEY_X ) ) m_camera.processMovement( Camera::Movement::DOWN, dt );
+        m_renderer->player().processMovement( Player::Movement::RIGHT, dt );
+    if (m_window->isPressed(GLFW_KEY_SPACE))
+        m_renderer->player().jump();
+    float h = -11.f;
+    int i = 0;
+    while (h < -10.f && i < m_renderer->numTerrains()) {
+        glm::vec3 pos = m_renderer->player().getPosition();
+        h = m_renderer->terrain(i++).getHeight(pos.x, pos.z);
+    }
+    m_renderer->player().update(dt, h);
+    m_camera.update(m_renderer->player().getPosition() + glm::vec3{0.f, 2.5f, 0.f}, m_renderer->player().getRotation().y);
 }
+
 
 void GLFWExample::loadExampleScene() {
     APP_INFO( "Loading example scene..." );
+    m_renderer->initPlayer(Player {Loader::loadMesh("resources/objects/person.obj")});
+    m_renderer->player().addAlbedoTexture("resources/textures/playerTexture.png");
+    m_renderer->player().setScale(glm::vec3 {0.2f});
+
     auto fun = []( float h ) { return ( 4.f * ( h - 0.5f ) * 2.f ) - 1.f; };
     Noise::init( 120, 6, 0.4f, 2.f, glm::vec3{ 0.f, 0.f, 0.f }, new Perlin( 241 ) );
 
@@ -105,7 +121,7 @@ void GLFWExample::run() {
         auto currenttime = float( glfwGetTime() );
         auto deltaTime   = currenttime - m_lastTime;
         m_lastTime       = currenttime;
-        moveCamera( deltaTime );
+        movePlayer( deltaTime );
         draw( deltaTime );
         m_window->finish();
     }
