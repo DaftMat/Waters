@@ -40,7 +40,14 @@ class ENGINE_API Renderable
 
     Material& material() { return m_material; };
 
+    virtual void toggleVisible();
+
+    [[nodiscard]] bool isVisible() const { return m_visible; }
+
   protected:
+    virtual Mesh generateMesh() = 0;
+
+    bool m_visible;
     Mesh m_mesh;
     Material m_material;
 };

@@ -46,7 +46,7 @@ Mesh Loader::loadMesh(const std::vector<Mesh::Vertex> &vertices,
     m_vaos.push_back(vao);
     m_vbos.push_back(vbo);
     m_vbos.push_back(ebo);
-    return Mesh(vao, indices.size());
+    return Mesh(vao, vbo, ebo, indices.size());
 }
 
 void Loader::clean() {
@@ -162,6 +162,22 @@ Mesh Loader::loadMesh(const std::string &filePath) {
     return loadMesh(vertices, indices);
 }
 
+void Loader::deleteMesh(Mesh &mesh) {
+    m_vaos.erase(std::remove(m_vaos.begin(), m_vaos.end(), mesh.vao()));
+    m_vbos.erase(std::remove_if(m_vbos.begin(), m_vbos.end(),
+            [&mesh](GLuint elem){ return elem == mesh.vbo() || elem == mesh.ebo(); }), m_vbos.end());
+    glDeleteVertexArrays(1, &mesh.vao());
+    glDeleteBuffers(1, &mesh.vbo());
+    glDeleteBuffers(1, &mesh.ebo());
+}
+
+void Loader::deleteTexture(Texture &texture) {
+    m_texs.erase(std::remove(m_texs.begin(), m_texs.end(), texture.id()));
+    glDeleteTextures(1, &texture.id());
+}
+
 std::vector<GLuint> Loader::m_vaos{};
 std::vector<GLuint> Loader::m_vbos{};
 std::vector<GLuint> Loader::m_texs{};
+
+

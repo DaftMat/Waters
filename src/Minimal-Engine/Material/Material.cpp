@@ -4,6 +4,7 @@
 
 #include "Material.hpp"
 #include <algorithm>
+#include <Minimal-Engine/Loader.hpp>
 
 void Material::prepare() const {
     for ( int i = 0; i < m_textures.size(); ++i )
@@ -94,4 +95,12 @@ Texture& Material::texture( const std::string& name ) {
     return *std::find_if( m_textures.begin(), m_textures.end(), [name]( const Texture& texture ) {
         return texture.name() == name;
     } );
+}
+
+void Material::reset() {
+    for (auto &tex : m_textures) {
+        Loader::deleteTexture(tex);
+    }
+    m_textures.clear();
+    m_settings.clear();
 }

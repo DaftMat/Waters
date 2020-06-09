@@ -22,7 +22,7 @@ class ENGINE_API Mesh
     };
 
     Mesh() = default;
-    Mesh( GLuint vao, GLuint numVertex ) : m_vao{ vao }, m_numVertex{ numVertex } {}
+    Mesh( GLuint vao, GLuint vbo, GLuint ebo, GLuint numVertex ) : m_vao{ vao }, m_vbo { vbo }, m_ebo { ebo }, m_numVertex{ numVertex } {}
     ~Mesh() = default;
 
     bool operator==(const Mesh &other) const { return m_vao == other.m_vao; }
@@ -36,8 +36,15 @@ class ENGINE_API Mesh
 
     void unbind() const;
 
+    [[nodiscard]] GLuint& vao() { return m_vao; }
+
+    [[nodiscard]] GLuint& vbo() { return m_vbo; }
+
+    [[nodiscard]] GLuint& ebo() { return m_ebo; }
+
+
   private:
-    GLuint m_vao{ 0 }, m_numVertex{ 0 };
+    GLuint m_vao{ 0 }, m_ebo{0}, m_vbo{0}, m_numVertex{ 0 };
 };
 
 #endif // DAFT_GAMEENGINE_MESH_HPP

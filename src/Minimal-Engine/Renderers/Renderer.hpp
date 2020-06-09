@@ -102,7 +102,7 @@ class Renderer
     std::vector<Water> m_waters;
     std::vector<Object> m_objects;
 
-    Player m_player{Mesh(0, 0)};
+    Player m_player{Mesh{}};
     bool m_initPlayer{false};
 
     std::unique_ptr<MultiSamplePass> m_renderPass{ nullptr };

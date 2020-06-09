@@ -4,6 +4,7 @@
 #include "Terrain.hpp"
 #include <Core/Log.hpp>
 #include <Minimal-Engine/Geometry/Primitives.hpp>
+#include <Minimal-Engine/Material/PerlinNoise/Noise.hpp>
 
 Terrain::Terrain( int resolution, float size ) : m_hmap {std::vector<float>(resolution * resolution, 0.f)}, m_size {size}, m_resolution { resolution } {
     m_mesh      = Primitives::plane( resolution, size );
@@ -91,4 +92,13 @@ float Terrain::mod(float a, float b) {
 void Terrain::setLod(int lod) {
     m_lod = lod;
     m_mesh = Primitives::plane(m_hmap, m_size, m_lod);
+}
+
+void Terrain::toggleVisible() {
+    Renderable::toggleVisible();
+    if (!isVisible()) {
+        m_hmap.reset();
+    } else {
+        m_hmap = HeightMap{Noise::generate(), m_fun};
+    }
 }

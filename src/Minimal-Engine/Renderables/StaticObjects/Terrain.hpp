@@ -5,6 +5,7 @@
 
 #include <Minimal-Engine/Material/HeightMap.hpp>
 #include <Minimal-Engine/Renderables/Renderable.hpp>
+#include <Minimal-Engine/Geometry/Primitives.hpp>
 
 /** Class for terrain objects.
  *
@@ -48,7 +49,11 @@ class ENGINE_API Terrain : public Renderable
 
     void setLod(int lod);
 
+    void toggleVisible() override;
+
   private:
+    Mesh generateMesh() override { return Primitives::plane(m_hmap, m_size, m_lod); }
+
     void init( float size );
     [[nodiscard]] static float barerp( const glm::vec3 &p1, const glm::vec3 &p2, const glm::vec3 &p3, const glm::vec2 &pos );
     [[nodiscard]] static float mod(float a, float b);

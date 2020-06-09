@@ -40,6 +40,10 @@ class ENGINE_API HeightMap
 
     [[nodiscard]] std::vector<float> getMap() const { return m_map; }
 
+    void reset() { m_map.clear(); }
+
+    void reset(const std::vector<float> map) { m_map = map; }
+
   private:
     std::vector<float> m_map;
     int m_size;

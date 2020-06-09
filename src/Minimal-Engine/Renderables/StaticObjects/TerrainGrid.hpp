@@ -24,6 +24,13 @@ public:
 
     [[nodiscard]] int size() const { return m_terrains.size(); }
 
+    /** updates the terrains that are rendered to the scene.
+     *
+     * @param x - world X position of the player.
+     * @param y - world Y position of the player.
+     */
+    void update(float x, float y);
+
 private:
     struct KeyFuncs {
         size_t operator()(const glm::ivec2& k) const {

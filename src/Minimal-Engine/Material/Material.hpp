@@ -112,6 +112,8 @@ class Material
 
     Texture& texture( const std::string& name );
 
+    void reset();
+
     /** Textures list getter.
      *
      * @return list of textures in the material.

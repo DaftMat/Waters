@@ -17,6 +17,8 @@ class ENGINE_API Loader
     static Texture loadTexture( const std::string& name, const std::string& path );
     static Texture loadCubeMap( const std::string& name, const std::array<std::string, 6> &paths);
     static void clean();
+    static void deleteMesh( Mesh &mesh );
+    static void deleteTexture( Texture &texture );
 
   private:
     static std::vector<GLuint> m_vaos;
