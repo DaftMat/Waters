@@ -16,7 +16,7 @@ A minimal rendering engine for waters (and terrains)
 ## Downloading, Compiling & Executing
 ### Downloading
 ```txt
-$ git clone https://github.com/DaftMat/Waters.git
+$ git clone --recurse-submodules https://github.com/DaftMat/Waters.git
 ```
 ### Compiling
 From project's root:
