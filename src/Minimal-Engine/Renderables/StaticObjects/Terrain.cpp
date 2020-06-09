@@ -99,6 +99,6 @@ void Terrain::toggleVisible() {
     if (!isVisible()) {
         m_hmap.reset();
     } else {
-        m_hmap = HeightMap{Noise::generate(), m_fun};
+        //m_hmap = HeightMap{Noise::generate(), m_fun};
     }
 }

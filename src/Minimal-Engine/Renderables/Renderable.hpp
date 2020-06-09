@@ -45,9 +45,9 @@ class ENGINE_API Renderable
     [[nodiscard]] bool isVisible() const { return m_visible; }
 
   protected:
-    virtual Mesh generateMesh() = 0;
+    virtual Mesh generateMesh() {};
 
-    bool m_visible;
+    bool m_visible{true};
     Mesh m_mesh;
     Material m_material;
 };
