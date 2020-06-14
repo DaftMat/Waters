@@ -1,18 +1,16 @@
-#TODO: replace engineApi with your own engine api name
 set(api_target engineApi)
 
 file(GLOB_RECURSE sources ${CMAKE_CURRENT_SOURCE_DIR}/*.cpp ${CMAKE_SOURCE_DIR}/3rdPartyLibs/GLAD/gl45core/glad.c)
 file(GLOB_RECURSE headers ${CMAKE_CURRENT_SOURCE_DIR}/*.hpp)
 file(GLOB_RECURSE inlines ${CMAKE_CURRENT_SOURCE_DIR}/*.inl)
 
-#TODO: set up all the dependencies of your engine api down here
-find_package(glm CONFIG REQUIRED)
+find_package(Eigen3 CONFIG REQUIRED)
 
 find_package(Assimp CONFIG REQUIRED)
 
-find_package(spdlog CONFIG REQUIRED)
+find_package(spdlog 1 CONFIG REQUIRED)
 
-set(EXT_LIBS ${GLM_LIBRARIES} ${ASSIMP_LIBRARIES} ${SPDLOG_LIBRARIES})
+set(EXT_LIBS)
 ###################################################################
 
 add_library(${api_target} SHARED ${sources} ${headers} ${inlines})

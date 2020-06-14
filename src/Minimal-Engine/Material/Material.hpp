@@ -14,7 +14,7 @@ class Material
     /** non-texture material settings.
      * e.g. albedo color, procedural textures, ...
      */
-    struct Setting {
+    struct Setting { ///TODO: make Setting a template struct
         enum Type { VECTOR, SCALAR, BOOL, INT } type;
         std::string name; ///< name of the setting.
         union {

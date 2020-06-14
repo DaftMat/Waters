@@ -20,7 +20,7 @@ public:
 
     [[nodiscard]] const std::function<float(float)> &fun() const { return m_fun; }
 
-    [[nodiscard]] float getHeight(float x, float y) const;///TODO: implement
+    [[nodiscard]] float getHeight(float x, float y) const;
 
     [[nodiscard]] int size() const { return m_terrains.size(); }
 

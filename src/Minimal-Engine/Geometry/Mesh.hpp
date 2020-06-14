@@ -12,7 +12,7 @@
 /** mesh class.
  * a triangle based mesh that associates geometry and topology
  */
-class ENGINE_API Mesh
+class ENGINE_API Mesh ///TODO: make noncopyable and make it deallocate its vao.
 {
   public:
     struct Vertex {
