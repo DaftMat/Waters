@@ -77,16 +77,16 @@ void GLFWExample::loadExampleScene() {
             m_renderer->addWater( Water( 0.03f, 4, size ) );
             m_renderer->water( index ).position() = glm::vec3{ pos.x, 0.f, pos.y };
 
-            for (int k = 0 ; k < Random::get(0, 10) ; ++k) {
+            for (int k = 0 ; k < wtr::Core::Random::get(0, 10) ; ++k) {
                 glm::vec2 coords = {
-                        Random::get(pos.x - size, pos.x + size),
-                        Random::get(pos.y - size, pos.y + size)
+                        wtr::Core::Random::get(pos.x - size, pos.x + size),
+                        wtr::Core::Random::get(pos.y - size, pos.y + size)
                 };
                 auto h = m_renderer->terrains().getHeight(coords.x, coords.y);
                 if (h > 0.f) {
                     m_renderer->addObject(Object(Loader::loadMesh("resources/objects/tree.obj")));
                     m_renderer->object(indexTree).setPosition(glm::vec3{coords.x, h - 0.25f, coords.y});
-                    m_renderer->object(indexTree).setScale(glm::vec3{Random::get(1.5f, 2.f)});
+                    m_renderer->object(indexTree).setScale(glm::vec3{wtr::Core::Random::get(1.5f, 2.f)});
                     m_renderer->object(indexTree).addAlbedoTexture("resources/textures/tree.png");
                     indexTree++;
                 }

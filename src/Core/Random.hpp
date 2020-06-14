@@ -1,12 +1,10 @@
 //
 // Created by mathis on 19/05/2020.
 //
-
-#ifndef OPENGLTUTO_RANDOM_HPP
-#define OPENGLTUTO_RANDOM_HPP
+#pragma once
 
 #include <random/include/effolkronium/random.hpp>
 
+namespace wtr::Core {
 using Random = effolkronium::random_static;
-
-#endif // OPENGLTUTO_RANDOM_HPP
+}  // namespace wtr::Core
