@@ -3,13 +3,13 @@
 //
 #pragma once
 
-
 #include <glm/detail/type_vec2.hpp>
 #include <map>
+
 #include "Terrain.hpp"
 
 class TerrainGrid {
-public:
+   public:
     explicit TerrainGrid(float size);
 
     void addTerrain(int x, int y);
@@ -31,21 +31,17 @@ public:
      */
     void update(float x, float y);
 
-private:
+   private:
     struct KeyFuncs {
-        size_t operator()(const glm::ivec2& k) const {
-            return std::hash<int>()(k.x) ^ std::hash<int>()(k.y);
-        }
+        size_t operator()(const glm::ivec2 &k) const { return std::hash<int>()(k.x) ^ std::hash<int>()(k.y); }
 
-        bool operator()(const glm::ivec2 &a, const glm::ivec2 &b) const {
-            return a.x == b.x && a.y == b.y;
-        }
+        bool operator()(const glm::ivec2 &a, const glm::ivec2 &b) const { return a.x == b.x && a.y == b.y; }
     };
 
     float m_size;
 
     std::unordered_map<glm::ivec2, Terrain, KeyFuncs, KeyFuncs> m_terrains;
-    std::function<float(float)> m_fun{[](float h){ return h; }};
+    std::function<float(float)> m_fun{[](float h) { return h; }};
 
     static const float baseOffset;
     static const int resolution;

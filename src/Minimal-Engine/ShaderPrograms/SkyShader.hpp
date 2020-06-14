@@ -3,12 +3,12 @@
 //
 #pragma once
 
-
 #include <Minimal-Engine/Material/Texture.hpp>
+
 #include "ShaderProgram.hpp"
 
 class SkyShader : public ShaderProgram {
-public:
+   public:
     SkyShader(const char *vertPath, const char *fragPath) : ShaderProgram(vertPath, fragPath) {}
 
     void loadCubeMap(const Texture &cubeMap);

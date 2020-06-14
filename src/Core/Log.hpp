@@ -60,34 +60,34 @@ class ENGINE_API Log {
 /**
  * Macros using the Logger.
  */
-#define ENGINE_ERROR(...)                              \
+#define ENGINE_ERROR(...)                         \
     wtr::Core::Log::engine()->error(__VA_ARGS__); \
     wtr::Core::Log::engineConsole()->error(__VA_ARGS__)
-#define ENGINE_INFO(...)                              \
+#define ENGINE_INFO(...)                         \
     wtr::Core::Log::engine()->info(__VA_ARGS__); \
     wtr::Core::Log::engineConsole()->info(__VA_ARGS__)
-#define ENGINE_WARN(...)                              \
+#define ENGINE_WARN(...)                         \
     wtr::Core::Log::engine()->warn(__VA_ARGS__); \
     wtr::Core::Log::engineConsole()->warn(__VA_ARGS__)
-#define ENGINE_TRACE(...)                              \
+#define ENGINE_TRACE(...)                         \
     wtr::Core::Log::engine()->trace(__VA_ARGS__); \
     wtr::Core::Log::engineConsole()->trace(__VA_ARGS__)
-#define ENGINE_DEBUG(...)                              \
+#define ENGINE_DEBUG(...)                         \
     wtr::Core::Log::engine()->debug(__VA_ARGS__); \
     wtr::Core::Log::engineConsole()->debug(__VA_ARGS__)
 
-#define APP_ERROR(...)                              \
+#define APP_ERROR(...)                         \
     wtr::Core::Log::app()->error(__VA_ARGS__); \
     wtr::Core::Log::appConsole()->error(__VA_ARGS__)
-#define APP_INFO(...)                              \
+#define APP_INFO(...)                         \
     wtr::Core::Log::app()->info(__VA_ARGS__); \
     wtr::Core::Log::appConsole()->info(__VA_ARGS__)
-#define APP_WARN(...)                              \
+#define APP_WARN(...)                         \
     wtr::Core::Log::app()->warn(__VA_ARGS__); \
     wtr::Core::Log::appConsole()->warn(__VA_ARGS__)
-#define APP_TRACE(...)                              \
+#define APP_TRACE(...)                         \
     wtr::Core::Log::app()->trace(__VA_ARGS__); \
     wtr::Core::Log::appConsole()->trace(__VA_ARGS__)
-#define APP_DEBUG(...)                              \
+#define APP_DEBUG(...)                         \
     wtr::Core::Log::app()->debug(__VA_ARGS__); \
     wtr::Core::Log::appConsole()->debug(__VA_ARGS__)

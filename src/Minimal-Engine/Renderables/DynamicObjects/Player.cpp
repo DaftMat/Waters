@@ -9,8 +9,7 @@ void Player::processMovement(Player::Movement movement, float dt) {
 
     float theta = glm::radians(getRotation().y);
     glm::vec3 pos = glm::vec3{0};
-    switch ( movement )
-    {
+    switch (movement) {
         case FRONT:
             pos.x = ds * glm::sin(theta);
             pos.z = ds * glm::cos(theta);
@@ -22,16 +21,16 @@ void Player::processMovement(Player::Movement movement, float dt) {
             translate(pos);
             break;
         case RIGHT:
-            rotate(glm::vec3{ 0.f, -dr, 0.f });
+            rotate(glm::vec3{0.f, -dr, 0.f});
             break;
         case LEFT:
-            rotate(glm::vec3{ 0.f, dr, 0.f });
+            rotate(glm::vec3{0.f, dr, 0.f});
             break;
     }
 }
 
 void Player::update(float dt, float height) {
-    glm::vec3 pos {0.f};
+    glm::vec3 pos{0.f};
     m_currentJumpForce += m_gravity * dt;
     pos.y = m_currentJumpForce * dt;
     translate(pos);
@@ -52,4 +51,3 @@ void Player::jump() {
         m_jumping = true;
     }
 }
-

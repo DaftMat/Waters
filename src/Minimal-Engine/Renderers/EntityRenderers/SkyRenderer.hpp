@@ -3,15 +3,14 @@
 //
 #pragma once
 
-
-#include <memory>
-#include <Minimal-Engine/ShaderPrograms/SkyShader.hpp>
 #include <Minimal-Engine/Geometry/Mesh.hpp>
 #include <Minimal-Engine/Renderables/Cameras/Camera.hpp>
 #include <Minimal-Engine/Renderables/Skyboxes/Skybox.hpp>
+#include <Minimal-Engine/ShaderPrograms/SkyShader.hpp>
+#include <memory>
 
 class SkyRenderer {
-public:
+   public:
     explicit SkyRenderer(const std::string &skyDir, float size);
 
     void prepare() const;
@@ -20,7 +19,7 @@ public:
 
     void unbind() const;
 
-    void loadMatrices(const glm::mat4& view, const glm::mat4& proj);
+    void loadMatrices(const glm::mat4 &view, const glm::mat4 &proj);
 
     [[nodiscard]] const Skybox &skybox() const { return m_skybox; }
 
@@ -28,7 +27,7 @@ public:
 
     void rotate(float deltatime);
 
-private:
+   private:
     Skybox m_skybox;
 
     std::unique_ptr<SkyShader> m_shader{nullptr};

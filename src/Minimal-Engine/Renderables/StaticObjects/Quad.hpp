@@ -5,10 +5,9 @@
 
 #include <Minimal-Engine/Renderables/Renderable.hpp>
 
-class Quad : public Renderable
-{
-  public:
-    Quad( float x, float y, float width, float height );
+class Quad : public Renderable {
+   public:
+    Quad(float x, float y, float width, float height);
 
-    void setTexture( int id ) { m_material.texture( "quadTexture" ).id() = id; }
+    void setTexture(int id) { m_material.texture("quadTexture").id() = id; }
 };

@@ -9,7 +9,8 @@
 #include <glm/gtc/type_ptr.hpp>
 
 /**
- * This file gives a list of aliases to the engine programmer to use Eigen library with more comfort.
+ * This file gives a list of aliases to the engine programmer to use Eigen
+ * library with more comfort.
  */
 namespace wtr::Core::Utils {
 /**

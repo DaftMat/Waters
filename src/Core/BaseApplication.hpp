@@ -4,9 +4,9 @@
 #pragma once
 #include <API.hpp>
 #include <Core/NonCopyable.hpp>
+#include <Minimal-Engine/Renderers/EntityRenderers/QuadRenderer.hpp>
 #include <Minimal-Engine/Renderers/Renderer.hpp>
 #include <memory>
-#include <Minimal-Engine/Renderers/EntityRenderers/QuadRenderer.hpp>
 
 namespace wtr::Core {
 /**

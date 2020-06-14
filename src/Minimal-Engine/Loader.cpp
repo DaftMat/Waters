@@ -4,16 +4,15 @@
 #define STB_IMAGE_IMPLEMENTATION
 
 #include "Loader.hpp"
-#include <Core/Log.hpp>
 
-#include <stb/stb_image.h>
-
-#include <assimp/Importer.hpp>
 #include <assimp/postprocess.h>
 #include <assimp/scene.h>
+#include <stb/stb_image.h>
 
-Mesh Loader::loadMesh(const std::vector<Mesh::Vertex> &vertices,
-                      const std::vector<GLuint> &indices) {
+#include <Core/Log.hpp>
+#include <assimp/Importer.hpp>
+
+Mesh Loader::loadMesh(const std::vector<Mesh::Vertex> &vertices, const std::vector<GLuint> &indices) {
     GLuint vao, vbo, ebo;
     glGenVertexArrays(1, &vao);
     glGenBuffers(1, &vbo);
@@ -21,26 +20,14 @@ Mesh Loader::loadMesh(const std::vector<Mesh::Vertex> &vertices,
 
     glBindVertexArray(vao);
     glBindBuffer(GL_ARRAY_BUFFER, vbo);
-    glBufferData(GL_ARRAY_BUFFER,
-                 vertices.size() * sizeof(Mesh::Vertex),
-                 vertices.data(),
-                 GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(Mesh::Vertex), vertices.data(), GL_STATIC_DRAW);
 
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER,
-                 indices.size() * sizeof(GLuint),
-                 indices.data(),
-                 GL_STATIC_DRAW);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(GLuint), indices.data(), GL_STATIC_DRAW);
 
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Mesh::Vertex), (void *) nullptr);
-    glVertexAttribPointer(
-            1, 3, GL_FLOAT, GL_FALSE, sizeof(Mesh::Vertex), (void *) offsetof(Mesh::Vertex, normal));
-    glVertexAttribPointer(2,
-                          2,
-                          GL_FLOAT,
-                          GL_FALSE,
-                          sizeof(Mesh::Vertex),
-                          (void *) offsetof(Mesh::Vertex, texCoords));
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Mesh::Vertex), (void *)nullptr);
+    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(Mesh::Vertex), (void *)offsetof(Mesh::Vertex, normal));
+    glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(Mesh::Vertex), (void *)offsetof(Mesh::Vertex, texCoords));
 
     glBindVertexArray(0);
     m_vaos.push_back(vao);
@@ -50,12 +37,9 @@ Mesh Loader::loadMesh(const std::vector<Mesh::Vertex> &vertices,
 }
 
 void Loader::clean() {
-    for (auto &vao : m_vaos)
-        glDeleteVertexArrays(1, &vao);
-    for (auto &vbo : m_vbos)
-        glDeleteBuffers(1, &vbo);
-    for (auto &tex : m_texs)
-        glDeleteTextures(1, &tex);
+    for (auto &vao : m_vaos) glDeleteVertexArrays(1, &vao);
+    for (auto &vbo : m_vbos) glDeleteBuffers(1, &vbo);
+    for (auto &tex : m_texs) glDeleteTextures(1, &tex);
 }
 
 Texture Loader::loadTexture(const std::string &name, const std::string &path) {
@@ -75,15 +59,16 @@ Texture Loader::loadTexture(const std::string &name, const std::string &path) {
 
         glBindTexture(GL_TEXTURE_2D, id);
 
-        glTexImage2D(
-                GL_TEXTURE_2D, 0, colorFormat, width, height, 0, colorFormat, GL_UNSIGNED_BYTE, data);
+        glTexImage2D(GL_TEXTURE_2D, 0, colorFormat, width, height, 0, colorFormat, GL_UNSIGNED_BYTE, data);
         glGenerateMipmap(GL_TEXTURE_2D);
 
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-    } else { ENGINE_ERROR("Failed to load texture {0}", path); }
+    } else {
+        ENGINE_ERROR("Failed to load texture {0}", path);
+    }
     stbi_image_free(data);
     m_texs.push_back(id);
 
@@ -99,8 +84,8 @@ Texture Loader::loadCubeMap(const std::string &name, const std::array<std::strin
     for (int i = 0; i < 6; ++i) {
         data = stbi_load(paths[i].c_str(), &width, &height, &numChannels, 0);
         if (data) {
-            glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, GL_RGB,
-                         width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
+            glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE,
+                         data);
             stbi_image_free(data);
         } else {
             ENGINE_ERROR("Failed to load texture {0}", paths[i]);
@@ -144,11 +129,13 @@ Mesh Loader::loadMesh(const std::string &filePath) {
         vertex.normal = vector;
         // texture coordinates
         if (mesh->mTextureCoords[0]) {
-            glm::vec2 vec {0.f};
+            glm::vec2 vec{0.f};
             vec.x = mesh->mTextureCoords[0][i].x;
             vec.y = mesh->mTextureCoords[0][i].y;
             vertex.texCoords = vec;
-        } else { vertex.texCoords = glm::vec2{0.f}; }
+        } else {
+            vertex.texCoords = glm::vec2{0.f};
+        }
         vertices.push_back(vertex);
     }
     /// process indices.
@@ -165,7 +152,8 @@ Mesh Loader::loadMesh(const std::string &filePath) {
 void Loader::deleteMesh(Mesh &mesh) {
     m_vaos.erase(std::remove(m_vaos.begin(), m_vaos.end(), mesh.vao()));
     m_vbos.erase(std::remove_if(m_vbos.begin(), m_vbos.end(),
-            [&mesh](GLuint elem){ return elem == mesh.vbo() || elem == mesh.ebo(); }), m_vbos.end());
+                                [&mesh](GLuint elem) { return elem == mesh.vbo() || elem == mesh.ebo(); }),
+                 m_vbos.end());
     glDeleteVertexArrays(1, &mesh.vao());
     glDeleteBuffers(1, &mesh.vbo());
     glDeleteBuffers(1, &mesh.ebo());
@@ -179,5 +167,3 @@ void Loader::deleteTexture(Texture &texture) {
 std::vector<GLuint> Loader::m_vaos{};
 std::vector<GLuint> Loader::m_vbos{};
 std::vector<GLuint> Loader::m_texs{};
-
-
