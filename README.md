@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.com/DaftMat/Waters.svg?branch=master)](https://travis-ci.com/DaftMat/Waters)
+
 # Waters !
 A minimal rendering engine for waters (and terrains)
 
