@@ -65,6 +65,11 @@ Texture::Texture(std::string name, const std::array<std::string, 6> &paths) : m_
     m_isValid = true;
 }
 
+Texture::~Texture() {
+    if (m_isValid) glDeleteTextures(1, &m_id);
+    m_isValid = false;
+}
+
 Texture &Texture::operator=(Texture &&other) noexcept {
     m_name = std::move_if_noexcept(other.m_name);
     m_id = other.m_id;
