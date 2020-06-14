@@ -9,7 +9,7 @@
 
 #include "GLFWWindow.hpp"
 
-class GLFWExample : public BaseApplication<GLFWWindow>
+class GLFWExample : public wtr::Core::BaseApplication<GLFWWindow>
 {
   public:
     GLFWExample();

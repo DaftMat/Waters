@@ -1,0 +1,96 @@
+language: cpp
+os: linux
+dist: bionic
+
+script:
+  - make -j 8
+  - make buildtests && make test
+
+env:
+  global:
+    - OMP_NUM_THREADS=4
+    - TIMEOUT=1000
+
+addons:
+  apt:
+    update: true
+    packages:
+      - util-linux
+      - clang-5.0
+      - g++-7
+      - cmake
+      - libomp-dev
+      - libgl1-mesa-dev
+      - xorg-dev
+      - libglu1-mesa-dev
+      - libxrandr-dev
+      - libxcb-randr0-dev
+      - libxinerama-dev
+      - libglm-dev
+      - libassimp-dev
+      - libeigen3-dev
+      - libspdlog-dev
+      - libglew-dev
+      - libglfw3-dev
+    sources:
+      - ubuntu-toolchain-r-test
+      - llvm-toolchain-bionic-5.0
+  homebrew:
+    update: true
+    packages:
+      - libomp
+      - glm
+      - eigen
+      - assimp
+      - spdlog
+      - glfw
+
+before_install:
+  - export CHECKOUT_PATH=`pwd`;
+  - eval "${MATRIX_EVAL}"
+  - if [ -n "$GCC_VERSION" ]; then export CXX="g++-${GCC_VERSION}" CC="gcc-${GCC_VERSION}"; fi
+  - if [ -n "$CLANG_VERSION" ]; then export CXX="clang++-${CLANG_VERSION}" CC="clang-${CLANG_VERSION}"; fi
+  - $CXX --version
+  - cmake --version
+  - |
+    if [[ "$TRAVIS_OS_NAME" = "linux" ]]; then
+      git clone --recurse-submodules https://github.com/gabime/spdlog.git
+      cd spdlog && mkdir build && cd build
+      cmake .. && sudo make -j16 install
+    fi;
+
+jobs:
+  include:
+    # mac clang Release
+    - env:
+        - BUILD_TYPE=Release
+        - BUILD_DOC=Off
+        - MATRIX_EVAL=""
+      os: osx
+      compiler: clang
+
+    # linx clang Release
+    - env:
+        - BUILD_TYPE=Release
+        - CLANG_VERSION=5.0
+        - BUILD_DOC=Off
+        - MATRIX_EVAL=""
+      os: linux
+      dist: bionic
+      compiler: clang
+
+    # linx gcc Release
+    - env:
+        - BUILD_TYPE=Release
+        - GCC_VERSION=7
+        - BUILD_DOC=Off
+        - MATRIX_EVAL=""
+      os: linux
+      dist: bionic
+      compiler: gcc
+
+install:
+  - cd $CHECKOUT_PATH
+  - mkdir -p build
+  - cd build
+  - cmake .. -DCMAKE_C_COMPILER=$CC -DCMAKE_CXX_COMPILER=$CXX -DCMAKE_BUILD_TYPE=${BUILD_TYPE}

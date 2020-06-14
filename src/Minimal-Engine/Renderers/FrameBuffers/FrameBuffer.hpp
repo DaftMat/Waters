@@ -6,10 +6,9 @@
 #include <Core/OpenGL.hpp>
 #include <vector>
 
-class FrameBuffer
-{
-  public:
-    FrameBuffer( int width, int height, int numSamples );
+class FrameBuffer {
+   public:
+    FrameBuffer(int width, int height, int numSamples);
     ~FrameBuffer();
 
     void prepare() const;
@@ -19,11 +18,11 @@ class FrameBuffer
      * @param width - screen width.
      * @param height - screen height.
      */
-    void unbind( int width, int height ) const;
+    void unbind(int width, int height) const;
 
-    [[nodiscard]] const std::vector<GLuint>& textures() const { return m_textures; }
+    [[nodiscard]] const std::vector<GLuint> &textures() const { return m_textures; }
 
-    [[nodiscard]] const std::vector<GLuint>& buffers() const { return m_buffers; }
+    [[nodiscard]] const std::vector<GLuint> &buffers() const { return m_buffers; }
 
     /** Resolves one fbo's color buffer to the screen's fbo.
      *
@@ -31,16 +30,16 @@ class FrameBuffer
      * @param height - screen height.
      * @param index - index of the color buffer to resolve.
      */
-    void resolve( int width, int height, int index = 0 ) const;
+    void resolve(int width, int height, int index = 0) const;
 
     /** Resolves one fbo's color buffer to another fbo.
      *
      * @param frameBuffer - other fbo.
      * @param index - index of the color buffer to resolve.
      */
-    void resolve( FrameBuffer& frameBuffer, int index = 0 ) const;
+    void resolve(FrameBuffer &frameBuffer, int index = 0) const;
 
-  protected:
+   protected:
     void addColorBuffer();
     void addDepthBuffer();
     void addStencilBuffer();
@@ -52,7 +51,7 @@ class FrameBuffer
 
     void drawBuffers();
 
-  private:
+   private:
     int m_width, m_height;
     GLuint m_fbo;
     std::vector<GLuint> m_textures;
@@ -60,6 +59,6 @@ class FrameBuffer
 
     int m_numSamples;
 
-    bool m_stencil{ false }, m_depth{ false }, m_stencil_depth{ false };
-    int m_num_color{ 0 };
+    bool m_stencil{false}, m_depth{false}, m_stencil_depth{false};
+    int m_num_color{0};
 };

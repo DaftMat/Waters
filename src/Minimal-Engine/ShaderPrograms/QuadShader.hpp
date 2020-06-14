@@ -5,11 +5,9 @@
 
 #include "ShaderProgram.hpp"
 
-class QuadShader : public ShaderProgram
-{
-  public:
-    QuadShader( const char* vertexPath, const char* fragmentPath ) :
-        ShaderProgram( vertexPath, fragmentPath ) {}
+class QuadShader : public ShaderProgram {
+   public:
+    QuadShader(const char *vertexPath, const char *fragmentPath) : ShaderProgram(vertexPath, fragmentPath) {}
 
     void setTexture();
 };

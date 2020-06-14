@@ -9,9 +9,8 @@
 #include <Minimal-Engine/ShaderPrograms/StaticShader.hpp>
 #include <memory>
 
-class EntityRenderer
-{
-  public:
+class EntityRenderer {
+   public:
     /** Default constructor (no shader).
      *
      */
@@ -22,7 +21,7 @@ class EntityRenderer
      * @param shaderProgram - associated shaderProgram.
      * @param projection - projection matrix.
      */
-    explicit EntityRenderer( StaticShader* shaderProgram ) : m_shaderProgram{ shaderProgram } {}
+    explicit EntityRenderer(StaticShader *shaderProgram) : m_shaderProgram{shaderProgram} {}
 
     /** Prepares the renderer to render.
      *
@@ -34,28 +33,24 @@ class EntityRenderer
      * @param view - camera's view matrix.
      * @param projection - viewport's projection matrix.
      */
-    void loadMatrices( const glm::mat4& view, const glm::mat4& projection ) const;
+    void loadMatrices(const glm::mat4 &view, const glm::mat4 &projection) const;
 
-    void loadFog( float density, float gradient ) const;
+    void loadFog(float density, float gradient) const;
 
-    void loadSky( const glm::vec3& skyColor ) const {
-        m_shaderProgram->setVec3( "skyColor", skyColor );
-    }
+    void loadSky(const glm::vec3 &skyColor) const { m_shaderProgram->setVec3("skyColor", skyColor); }
 
-    void loadSkybox( const Skybox &skybox ) const { m_shaderProgram->setSkybox(skybox); }
+    void loadSkybox(const Skybox &skybox) const { m_shaderProgram->setSkybox(skybox); }
 
-    void setClipPlane( const glm::vec4& plane ) const {
-        m_shaderProgram->setVec4( "clipPlane", plane );
-    }
+    void setClipPlane(const glm::vec4 &plane) const { m_shaderProgram->setVec4("clipPlane", plane); }
 
     void unbind() const { m_shaderProgram->stop(); }
 
-    void setShader( const char* vertex, const char* fragment );
+    void setShader(const char *vertex, const char *fragment);
 
-  protected:
-    void setLights( const LightCollection& lights ) const;
+   protected:
+    void setLights(const LightCollection &lights) const;
 
-    std::unique_ptr<StaticShader> m_shaderProgram{ nullptr };
+    std::unique_ptr<StaticShader> m_shaderProgram{nullptr};
 };
 
-#endif // DAFT_GAMEENGINE_ENTITYRENDERER_HPP
+#endif  // DAFT_GAMEENGINE_ENTITYRENDERER_HPP

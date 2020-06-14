@@ -4,6 +4,4 @@
 
 #include "QuadShader.hpp"
 
-void QuadShader::setTexture() {
-    setInt( "quadTexture", 0 );
-}
+void QuadShader::setTexture() { setInt("quadTexture", 0); }

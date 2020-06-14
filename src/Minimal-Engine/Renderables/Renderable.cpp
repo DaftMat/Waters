@@ -1,8 +1,9 @@
 //
 // Created by mathis on 31/05/2020.
 //
-#include <Minimal-Engine/Loader.hpp>
 #include "Renderable.hpp"
+
+#include <Minimal-Engine/Loader.hpp>
 
 void Renderable::prepare() const {
     if (!m_visible) return;
@@ -10,9 +11,9 @@ void Renderable::prepare() const {
     m_material.prepare();
 }
 
-void Renderable::render( GLuint type ) const {
+void Renderable::render(GLuint type) const {
     if (!m_visible) return;
-    m_mesh.render( type );
+    m_mesh.render(type);
 }
 
 void Renderable::unbind() const {
@@ -28,5 +29,5 @@ void Renderable::toggleVisible() {
     } else {
         m_mesh = generateMesh();
     }
-    //set material (in inherited classes)
+    // set material (in inherited classes)
 }

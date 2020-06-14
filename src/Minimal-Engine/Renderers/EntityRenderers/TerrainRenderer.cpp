@@ -4,16 +4,14 @@
 
 #include "TerrainRenderer.hpp"
 
-void TerrainRenderer::render( const std::vector<Terrain>& terrains,
-                              const LightCollection& lights ) {
-    setLights( lights );
-    for ( const auto& t : terrains )
-    {
-        m_shaderProgram->setMat4( "model", t.model() );
-        m_shaderProgram->setMaterial( t.material(), "terrainMat" );
-        m_shaderProgram->setInt( "entityType", Renderable::Type::TERRAIN );
+void TerrainRenderer::render(const std::vector<Terrain> &terrains, const LightCollection &lights) {
+    setLights(lights);
+    for (const auto &t : terrains) {
+        m_shaderProgram->setMat4("model", t.model());
+        m_shaderProgram->setMaterial(t.material(), "terrainMat");
+        m_shaderProgram->setInt("entityType", Renderable::Type::TERRAIN);
         t.prepare();
-        t.render( GL_TRIANGLES );
+        t.render(GL_TRIANGLES);
         t.unbind();
     }
     m_shaderProgram->clearLights();

@@ -5,16 +5,13 @@
 #ifndef DAFT_GAMEENGINE_CAMERA_HPP
 #define DAFT_GAMEENGINE_CAMERA_HPP
 #include <API.hpp>
-
 #include <Core/OpenGL.hpp>
 
 /** camera class.
  * camera giving the view matrix.
  */
-class ENGINE_API Camera
-{
-  public:
-
+class ENGINE_API Camera {
+   public:
     /** Constructor.
      * no roll as this camera won't need it.
      * @param position - position of the camera
@@ -22,18 +19,14 @@ class ENGINE_API Camera
      * @param yaw - horizontal rotation
      * @param pitch - vertical rotation
      */
-    explicit Camera( const glm::vec3& position = { 0.f, 0.f, -3.f },
-                     const glm::vec3& worldUp  = { 0.f, 1.f, 0.f },
-                     float yaw                 = 90.f,
-                     float pitch               = 0.f );
+    explicit Camera(const glm::vec3 &position = {0.f, 0.f, -3.f}, const glm::vec3 &worldUp = {0.f, 1.f, 0.f},
+                    float yaw = 90.f, float pitch = 0.f);
 
     /** calculates view matrix.
      *
      * @return the view matrix of the camera.
      */
-    [[nodiscard]] glm::mat4 getViewMatrix() const {
-        return glm::lookAt( m_position, m_position + m_front, m_up );
-    }
+    [[nodiscard]] glm::mat4 getViewMatrix() const { return glm::lookAt(m_position, m_position + m_front, m_up); }
 
     /** fov getter.
      *
@@ -51,9 +44,9 @@ class ENGINE_API Camera
      *
      * @param newPos - new position of the camera
      */
-    void setPosition( const glm::vec3& newPos ) { m_position = newPos; }
+    void setPosition(const glm::vec3 &newPos) { m_position = newPos; }
 
-    void translate( const glm::vec3& t ) { m_position += t; }
+    void translate(const glm::vec3 &t) { m_position += t; }
 
     /** front getter.
      *
@@ -63,12 +56,13 @@ class ENGINE_API Camera
 
     /** mouse scroll movement processing function.
      * will move forward or backward (with the limit of .
-     * @param offset - difference between last position and current position of the scroll
+     * @param offset - difference between last position and current position of
+     * the scroll
      */
-    void processMouseScroll( float offset );
+    void processMouseScroll(float offset);
 
-    void processMousePress( const glm::vec2& mousePos ) {
-        m_mousePressed  = true;
+    void processMousePress(const glm::vec2 &mousePos) {
+        m_mousePressed = true;
         m_mousePosition = mousePos;
     }
 
@@ -78,7 +72,7 @@ class ENGINE_API Camera
      *
      * @param mousePos - current mouse position.
      */
-    void processMouseMove( const glm::vec2& mousePos );
+    void processMouseMove(const glm::vec2 &mousePos);
 
     void flip();
 
@@ -86,7 +80,7 @@ class ENGINE_API Camera
 
     void updateYaw(float dt);
 
-  private:
+   private:
     void updateCameraVectors();
     void updatePosition();
 
@@ -101,7 +95,7 @@ class ENGINE_API Camera
     float m_velocity, m_sensitivity, m_fov;
 
     glm::vec2 m_mousePosition;
-    bool m_mousePressed{ false };
+    bool m_mousePressed{false};
 };
 
-#endif // DAFT_GAMEENGINE_CAMERA_HPP
+#endif  // DAFT_GAMEENGINE_CAMERA_HPP

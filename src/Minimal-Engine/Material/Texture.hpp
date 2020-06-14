@@ -11,15 +11,14 @@
 /** texture class.
  * loads an image into an opengl texture.
  */
-class Texture
-{
-  public:
+class Texture {
+   public:
     /** Constructor.
      *
      * @param name - name of the texture.
      * @param file - file path of the texture.
      */
-    Texture( std::string name, GLuint id );
+    Texture(std::string name, GLuint id);
 
     /** Binds the texture to the current opengl GL_TEXTURE
      *
@@ -30,7 +29,7 @@ class Texture
      *
      * @return texture's name.
      */
-    [[nodiscard]] const std::string& name() const { return m_name; }
+    [[nodiscard]] const std::string &name() const { return m_name; }
 
     /** id getter.
      *
@@ -38,11 +37,11 @@ class Texture
      */
     [[nodiscard]] GLuint id() const { return m_id; }
 
-    GLuint& id() { return m_id; }
+    GLuint &id() { return m_id; }
 
-  private:
+   private:
     GLuint m_id;
     std::string m_name;
 };
 
-#endif // DAFT_GAMEENGINE_TEXTURE_HPP
+#endif  // DAFT_GAMEENGINE_TEXTURE_HPP
