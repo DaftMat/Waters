@@ -6,7 +6,7 @@
 #include <Test.hpp>
 #include <algorithm>
 
-namespace ProjName::Testing {
+namespace wtr::Testing {
 
 void run() {
     using namespace Core::Utils;
@@ -41,10 +41,10 @@ void run() {
     UNIT_VERIFY(Vector4i(-7, 2, -4, 6) == toEigen(glm::ivec4(-7, 2, -4, 6)), "toEigen fails with Vector4i");
 }
 
-}  // namespace ProjName::Testing
+}  // namespace wtr::Testing
 
 int main(int argc, const char **argv) {
-    using namespace ProjName;
+    using namespace wtr;
     if (!Testing::init_testing(1, argv)) {
         return EXIT_FAILURE;
     }
