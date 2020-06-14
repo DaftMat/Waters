@@ -10,5 +10,5 @@ Skybox::Skybox(const std::string &skyDir, float size, float speed) : m_speed{spe
     if (dir.back() != '/') dir += "/";
     std::for_each(m_faces.begin(), m_faces.end(), [&dir](std::string &e) { e = dir + e + ".jpg"; });
     m_mesh = Primitives::cube(2, size);
-    m_material.addTexture(Loader::loadCubeMap("cubeMap", m_faces));
+    m_material.addTexture(Texture("cubeMap", m_faces));
 }

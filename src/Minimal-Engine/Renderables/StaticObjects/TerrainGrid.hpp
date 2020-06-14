@@ -8,13 +8,18 @@
 
 #include "Terrain.hpp"
 
-class TerrainGrid {
+class TerrainGrid : public wtr::Core::NonCopyable {
    public:
     explicit TerrainGrid(float size);
 
+    TerrainGrid(TerrainGrid &&) = default;
+    TerrainGrid &operator=(TerrainGrid &&) = default;
+
     void addTerrain(int x, int y);
 
-    std::vector<Terrain> terrains();
+    Terrain &terrain(int x, int y);
+
+    const Terrain &terrain(int x, int y) const;
 
     std::function<float(float)> &fun() { return m_fun; }
 
@@ -23,6 +28,10 @@ class TerrainGrid {
     [[nodiscard]] float getHeight(float x, float y) const;
 
     [[nodiscard]] int size() const { return m_terrains.size(); }
+
+    [[nodiscard]] auto begin() const noexcept { return m_terrains.begin(); }
+
+    [[nodiscard]] auto end() const noexcept { return m_terrains.end(); }
 
     /** updates the terrains that are rendered to the scene.
      *

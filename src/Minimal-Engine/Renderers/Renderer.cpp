@@ -99,7 +99,7 @@ void Renderer::renderScene(const glm::mat4 &view, const glm::mat4 &proj, const L
     m_terrainRenderer->loadFog(m_fogDensity, m_fogGradient);
     m_terrainRenderer->loadSkybox(m_skyRenderer->skybox());
     if (glm::length(clipPlane) > 0) m_terrainRenderer->setClipPlane(clipPlane);
-    m_terrainRenderer->render(m_terrains.terrains(), lights);
+    m_terrainRenderer->render(m_terrains, lights);
     m_terrainRenderer->unbind();
 
     m_objectRenderer->prepare();
@@ -107,9 +107,10 @@ void Renderer::renderScene(const glm::mat4 &view, const glm::mat4 &proj, const L
     m_objectRenderer->loadFog(m_fogDensity, m_fogGradient);
     m_objectRenderer->loadSkybox(m_skyRenderer->skybox());
     if (glm::length(clipPlane) > 0) m_objectRenderer->setClipPlane(clipPlane);
-    if (m_initPlayer) m_objects.push_back(m_player);
     m_objectRenderer->render(m_objects, lights);
-    if (m_initPlayer) m_objects.erase(std::remove(m_objects.begin(), m_objects.end(), m_player));
+    m_objectRenderer->setLights(lights);
+    m_objectRenderer->render(m_player);
+    m_objectRenderer->clearLights();
     m_objectRenderer->unbind();
 
     m_skyRenderer->prepare();

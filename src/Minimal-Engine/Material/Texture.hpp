@@ -5,20 +5,29 @@
 #ifndef DAFT_GAMEENGINE_TEXTURE_HPP
 #define DAFT_GAMEENGINE_TEXTURE_HPP
 
+#include <Core/NonCopyable.hpp>
 #include <Core/OpenGL.hpp>
 #include <string>
 
 /** texture class.
  * loads an image into an opengl texture.
  */
-class Texture {
+class Texture : public wtr::Core::NonCopyable {
    public:
-    /** Constructor.
-     *
-     * @param name - name of the texture.
-     * @param file - file path of the texture.
-     */
-    Texture(std::string name, GLuint id);
+    explicit Texture(std::string name) noexcept : m_id{0}, m_name{std::move_if_noexcept(name)} {}
+    ~Texture() {
+        if (m_isValid) glDeleteTextures(1, &m_id);
+        m_isValid = false;
+    }
+
+    Texture(std::string name, std::string path);
+
+    Texture(std::string name, const std::array<std::string, 6> &paths);
+
+    Texture(Texture &&other) noexcept : m_id{other.m_id}, m_name{std::move_if_noexcept(other.m_name)} {
+        other.m_isValid = false;
+    }
+    Texture &operator=(Texture &&other) noexcept;
 
     /** Binds the texture to the current opengl GL_TEXTURE
      *
@@ -42,6 +51,7 @@ class Texture {
    private:
     GLuint m_id;
     std::string m_name;
+    bool m_isValid{false};
 };
 
 #endif  // DAFT_GAMEENGINE_TEXTURE_HPP

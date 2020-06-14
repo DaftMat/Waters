@@ -37,7 +37,7 @@ void Terrain::init(float size) {
 
 void Terrain::addTextureLayer(const Terrain::TextureLayer &textureLayer) {
     std::string name = "texLayers[" + std::to_string(m_numLayers++) + "]";
-    m_material.addTexture(Loader::loadTexture(name + ".texture", textureLayer.path));
+    m_material.addTexture(Texture(name + ".texture", textureLayer.path));
     m_material.addSetting(name + ".startHeight", textureLayer.startHeight);
     m_material.addSetting(name + ".blend", textureLayer.blend);
     m_material.setSetting("numLayers", m_numLayers);

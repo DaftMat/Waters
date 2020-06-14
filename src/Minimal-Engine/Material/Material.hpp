@@ -9,7 +9,7 @@
 
 #include "Texture.hpp"
 
-class Material {
+class Material : public wtr::Core::NonCopyable {
    public:
     /** non-texture material settings.
      * e.g. albedo color, procedural textures, ...
@@ -24,6 +24,9 @@ class Material {
             bool boolData;
         } data;  ///< data of the settings, can either be a vector or a float.
     };
+
+    Material(Material &&) = default;
+    Material &operator=(Material &&) = default;
 
     /** default constructor.
      *
@@ -118,13 +121,13 @@ class Material {
      *
      * @return list of textures in the material.
      */
-    const std::vector<Texture> &textures() const { return m_textures; }
+    [[nodiscard]] const std::vector<Texture> &textures() const { return m_textures; }
 
     /** Settings list getter.
      *
      * @return list of settings in the material.
      */
-    const std::vector<Setting> &settings() const { return m_settings; }
+    [[nodiscard]] const std::vector<Setting> &settings() const { return m_settings; }
 
    private:
     std::vector<Texture> m_textures;

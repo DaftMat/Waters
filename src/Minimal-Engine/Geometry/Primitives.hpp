@@ -3,7 +3,6 @@
 //
 #pragma once
 
-#include <Minimal-Engine/Loader.hpp>
 #include <Minimal-Engine/Material/HeightMap.hpp>
 
 #include "Mesh.hpp"

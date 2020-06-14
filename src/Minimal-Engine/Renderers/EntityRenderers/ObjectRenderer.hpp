@@ -11,4 +11,5 @@ class ObjectRenderer : public EntityRenderer {
     explicit ObjectRenderer(StaticShader *staticShader) : EntityRenderer(staticShader) {}
 
     void render(const std::vector<Object> &objects, const LightCollection &lights);
+    void render(const Object &object);
 };

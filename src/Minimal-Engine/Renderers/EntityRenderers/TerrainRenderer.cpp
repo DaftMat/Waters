@@ -4,15 +4,17 @@
 
 #include "TerrainRenderer.hpp"
 
-void TerrainRenderer::render(const std::vector<Terrain> &terrains, const LightCollection &lights) {
+#include <Minimal-Engine/Renderables/StaticObjects/TerrainGrid.hpp>
+
+void TerrainRenderer::render(const TerrainGrid &terrains, const LightCollection &lights) {
     setLights(lights);
     for (const auto &t : terrains) {
-        m_shaderProgram->setMat4("model", t.model());
-        m_shaderProgram->setMaterial(t.material(), "terrainMat");
+        m_shaderProgram->setMat4("model", t.second.model());
+        m_shaderProgram->setMaterial(t.second.material(), "terrainMat");
         m_shaderProgram->setInt("entityType", Renderable::Type::TERRAIN);
-        t.prepare();
-        t.render(GL_TRIANGLES);
-        t.unbind();
+        t.second.prepare();
+        t.second.render(GL_TRIANGLES);
+        t.second.unbind();
     }
     m_shaderProgram->clearLights();
 }

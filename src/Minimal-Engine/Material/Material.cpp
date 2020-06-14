@@ -4,7 +4,6 @@
 
 #include "Material.hpp"
 
-#include <Minimal-Engine/Loader.hpp>
 #include <algorithm>
 
 void Material::prepare() const {
@@ -15,14 +14,14 @@ void Material::prepare() const {
     glActiveTexture(GL_TEXTURE0);
 }
 
-void Material::addTexture(Texture texture) { m_textures.push_back(texture); }
+void Material::addTexture(Texture texture) { m_textures.emplace_back(std::move(texture)); }
 
 void Material::addSetting(std::string name, const glm::vec3 &data) {
     Setting setting{};
     setting.type = Setting::Type::VECTOR;
     setting.name = std::move(name);
     setting.data.vectorData = data;
-    m_settings.push_back(setting);
+    m_settings.emplace_back(setting);
 }
 
 void Material::addSetting(std::string name, float data) {
@@ -30,7 +29,7 @@ void Material::addSetting(std::string name, float data) {
     setting.type = Setting::Type::SCALAR;
     setting.name = std::move(name);
     setting.data.scalarData = data;
-    m_settings.push_back(setting);
+    m_settings.emplace_back(setting);
 }
 
 void Material::addSetting(std::string name, bool data) {
@@ -38,7 +37,7 @@ void Material::addSetting(std::string name, bool data) {
     setting.type = Setting::Type::BOOL;
     setting.name = std::move(name);
     setting.data.boolData = data;
-    m_settings.push_back(setting);
+    m_settings.emplace_back(setting);
 }
 
 void Material::addSetting(std::string name, int data) {
@@ -46,7 +45,7 @@ void Material::addSetting(std::string name, int data) {
     setting.type = Setting::Type::INT;
     setting.name = std::move(name);
     setting.data.intData = data;
-    m_settings.push_back(setting);
+    m_settings.emplace_back(setting);
 }
 
 void Material::deleteTexture(const std::string &name) {
@@ -91,9 +90,6 @@ Texture &Material::texture(const std::string &name) {
 }
 
 void Material::reset() {
-    for (auto &tex : m_textures) {
-        Loader::deleteTexture(tex);
-    }
     m_textures.clear();
     m_settings.clear();
 }
