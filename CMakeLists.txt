@@ -17,6 +17,9 @@ endif()
 set(EXECUTABLE_OUTPUT_PATH ${CMAKE_SOURCE_DIR}/bin/${CMAKE_BUILD_TYPE})
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
 
+set(TEST_DIR ${CMAKE_CURRENT_SOURCE_DIR}/tests)
+set(SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/src)
+
 # Win32 stuff
 if (MSVC OR MSVC_IDE)
     # Use November CTP 2013 (constexpr and other non implemented stuff in the 2013 version)
@@ -43,7 +46,10 @@ if (MSVC OR MSVC_IDE)
 #    endif()
     message(ERROR Unsupported Compiler.)
 else(MSVC OR MSVC_IDE)
-	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++17 -Wall -pedantic -Wextra -g -O3 -fopenmp")
+	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++17 -Wall -pedantic -Wextra -g -O3")
+    if (NOT APPLE)
+        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fopenmp")
+    endif()
 endif(MSVC OR MSVC_IDE)
 
 ##################################
@@ -51,7 +57,6 @@ endif(MSVC OR MSVC_IDE)
 ##################################
 set(ENGINE_LIBRARIES)
 set(ENGINE_API)
-set(TEST_DIR ${CMAKE_CURRENT_SOURCE_DIR}/tests)
 
 add_subdirectory(${CMAKE_SOURCE_DIR}/src)
 add_subdirectory(${CMAKE_SOURCE_DIR}/Applications)
