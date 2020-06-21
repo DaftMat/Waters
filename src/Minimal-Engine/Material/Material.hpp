@@ -1,30 +1,15 @@
 //
 // Created by mathis on 09/05/2020.
 //
-
-#ifndef DAFT_GAMEENGINE_MATERIAL_HPP
-#define DAFT_GAMEENGINE_MATERIAL_HPP
+#pragma once
 
 #include <vector>
 
+#include "SettingManager.hpp"
 #include "Texture.hpp"
 
 class Material : public wtr::Core::NonCopyable {
    public:
-    /** non-texture material settings.
-     * e.g. albedo color, procedural textures, ...
-     */
-    struct Setting {  /// TODO: make Setting a template struct
-        enum Type { VECTOR, SCALAR, BOOL, INT } type;
-        std::string name;  ///< name of the setting.
-        union {
-            glm::vec3 vectorData;
-            float scalarData;
-            int intData;
-            bool boolData;
-        } data;  ///< data of the settings, can either be a vector or a float.
-    };
-
     Material(Material &&) = default;
     Material &operator=(Material &&) = default;
 
@@ -45,33 +30,16 @@ class Material : public wtr::Core::NonCopyable {
      */
     void addTexture(Texture texture);
 
-    /** Adds a vector setting to the material.
-     *
+    /**
+     * adds a bool setting to the material.
+     * @tparam T - type of the setting's data.
      * @param name - name of the setting.
-     * @param data - vector of the setting.
+     * @param data - data of the setting.
      */
-    void addSetting(std::string name, const glm::vec3 &data);
-
-    /** Adds a float setting to the material.
-     *
-     * @param name - name of the setting.
-     * @param data - float of the setting.
-     */
-    void addSetting(std::string name, float data);
-
-    /** adds a bool setting to the material.
-     *
-     * @param name - name of the setting.
-     * @param data - bool of the setting.
-     */
-    void addSetting(std::string name, bool data);
-
-    /** adds a bool setting to the material.
-     *
-     * @param name - name of the setting.
-     * @param data - bool of the setting.
-     */
-    void addSetting(std::string name, int data);
+    template <typename T>
+    void addSetting(std::string name, T data) {
+        m_settings.add(std::move(name), data);
+    }
 
     /** Deletes a texture from the material.
      *
@@ -79,39 +47,21 @@ class Material : public wtr::Core::NonCopyable {
      */
     void deleteTexture(const std::string &name);
 
-    /** Deletes a setting from the material.
-     *
-     * @param name - name of the setting to be deleted.
-     */
-    void deleteSetting(const std::string &name);
-
-    /** Sets the vector data of a setting in the material.
-     *
+    /**
+     * Sets the bool data of a setting in the material.
+     * @tparam T - type of the setting's data
      * @param name - name of the setting to be set.
-     * @param data - new vector of the setting.
+     * @param data - new data of the setting.
      */
-    void setSetting(const std::string &name, const glm::vec3 &data);
+    template <typename T>
+    void setSetting(std::string name, T data) {
+        m_settings.set(std::move(name), data);
+    }
 
-    /** Sets the float data of a setting in the material.
-     *
-     * @param name - name of the setting to be set.
-     * @param data - new float of the setting.
-     */
-    void setSetting(const std::string &name, float data);
-
-    /** Sets the bool data of a setting in the material.
-     *
-     * @param name - name of the setting to be set.
-     * @param data - new bool of the setting.
-     */
-    void setSetting(const std::string &name, bool data);
-
-    /** Sets the bool data of a setting in the material.
-     *
-     * @param name - name of the setting to be set.
-     * @param data - new bool of the setting.
-     */
-    void setSetting(const std::string &name, int data);
+    template <typename T>
+    void deleteSetting(std::string name) {
+        m_settings.remove<T>(std::move(name));
+    }
 
     Texture &texture(const std::string &name);
 
@@ -127,11 +77,12 @@ class Material : public wtr::Core::NonCopyable {
      *
      * @return list of settings in the material.
      */
-    [[nodiscard]] const std::vector<Setting> &settings() const { return m_settings; }
+    template <typename T>
+    [[nodiscard]] const std::vector<SettingManager::Setting<T>> &settings() const {
+        return m_settings.settings<T>();
+    }
 
    private:
     std::vector<Texture> m_textures;
-    std::vector<Setting> m_settings;
+    SettingManager m_settings{};
 };
-
-#endif  // DAFT_GAMEENGINE_MATERIAL_HPP

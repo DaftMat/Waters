@@ -6,24 +6,45 @@
 #include <Minimal-Engine/Material/Material.hpp>
 
 void StaticShader::setMaterial(const Material &material, const std::string &name) const {
+    /// Textures
     for (int i = 0; i < material.textures().size(); ++i) {
         setInt(name + "." + material.textures()[i].name(), i);
     }
-    for (const auto &setting : material.settings()) {
-        switch (setting.type) {
-            case Material::Setting::Type::VECTOR:
-                setVec3(name + "." + setting.name, setting.data.vectorData);
-                break;
-            case Material::Setting::Type::SCALAR:
-                setFloat(name + "." + setting.name, setting.data.scalarData);
-                break;
-            case Material::Setting::Type::BOOL:
-                setBool(name + "." + setting.name, setting.data.boolData);
-                break;
-            case Material::Setting::Type::INT:
-                setInt(name + "." + setting.name, setting.data.intData);
-                break;
-        }
+    /// Int settings
+    for (auto &setting : material.settings<int>()) {
+        setInt(name + "." + setting.name, setting.data);
+    }
+    /// Bool settings
+    for (auto &setting : material.settings<bool>()) {
+        setBool(name + "." + setting.name, setting.data);
+    }
+    /// Float settings
+    for (auto &setting : material.settings<float>()) {
+        setFloat(name + "." + setting.name, setting.data);
+    }
+    /// Vec2 settings
+    for (auto &setting : material.settings<glm::vec2>()) {
+        setVec2(name + "." + setting.name, setting.data);
+    }
+    /// Vec3 settings
+    for (auto &setting : material.settings<glm::vec3>()) {
+        setVec3(name + "." + setting.name, setting.data);
+    }
+    /// Vec4 settings
+    for (auto &setting : material.settings<glm::vec4>()) {
+        setVec4(name + "." + setting.name, setting.data);
+    }
+    /// Mat2 settings
+    for (auto &setting : material.settings<glm::mat2>()) {
+        setMat2(name + "." + setting.name, setting.data);
+    }
+    /// Mat3 settings
+    for (auto &setting : material.settings<glm::mat3>()) {
+        setMat3(name + "." + setting.name, setting.data);
+    }
+    /// Mat4 settings
+    for (auto &setting : material.settings<glm::mat4>()) {
+        setMat4(name + "." + setting.name, setting.data);
     }
 }
 
