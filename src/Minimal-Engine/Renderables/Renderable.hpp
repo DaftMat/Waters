@@ -12,7 +12,7 @@
 /** Base class for all renderable objects.
  *
  */
-class ENGINE_API Renderable {
+class ENGINE_API Renderable : public wtr::Core::NonCopyable {
    public:
     enum Type { OBJECT = 0, TERRAIN, WATER };
 
@@ -21,6 +21,9 @@ class ENGINE_API Renderable {
 
     bool operator==(const Renderable &other) const { return m_mesh == other.m_mesh; }
     bool operator==(Renderable &&other) const { return m_mesh == other.m_mesh; }
+
+    Renderable(Renderable &&) = default;
+    Renderable &operator=(Renderable &&) = default;
 
     void prepare() const;
 

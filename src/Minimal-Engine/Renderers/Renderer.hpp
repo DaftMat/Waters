@@ -28,14 +28,11 @@ class Renderer {
 
     void addTerrain(int x, int y) { m_terrains.addTerrain(x, y); }
 
-    void addWater(const Water &water) { m_waters.push_back(water); }
+    void addWater(Water water) { m_waters.emplace_back(std::move(water)); }
 
-    void addObject(const Object &object) { m_objects.push_back(object); }
+    void addObject(Object object) { m_objects.emplace_back(std::move(object)); }
 
-    void initPlayer(const Player &player) {
-        m_player = player;
-        m_initPlayer = true;
-    }
+    void initPlayer(Player player) { m_player = std::move(player); }
 
     void resize(int width, int height);
 
@@ -97,7 +94,6 @@ class Renderer {
     std::vector<Object> m_objects;
 
     Player m_player{Mesh{}};
-    bool m_initPlayer{false};
 
     std::unique_ptr<MultiSamplePass> m_renderPass{nullptr};
 

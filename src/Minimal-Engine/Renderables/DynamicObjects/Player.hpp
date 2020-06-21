@@ -9,9 +9,9 @@ class Player : public Object {
    public:
     enum Movement { FRONT, BACK, RIGHT, LEFT };
 
-    explicit Player(const Mesh &mesh, const glm::vec3 &position = glm::vec3{0.f},
-                    const glm::vec3 &rotation = glm::vec3{0}, const glm::vec3 &scale = glm::vec3{1.f})
-        : Object(mesh, position, rotation, scale) {}
+    explicit Player(Mesh mesh, const glm::vec3 &position = glm::vec3{0.f}, const glm::vec3 &rotation = glm::vec3{0},
+                    const glm::vec3 &scale = glm::vec3{1.f})
+        : Object(std::move(mesh), position, rotation, scale) {}
 
     void processMovement(Movement movement, float dt);
 

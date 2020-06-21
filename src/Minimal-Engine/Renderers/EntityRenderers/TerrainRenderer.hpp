@@ -6,9 +6,10 @@
 #define DAFT_GAMEENGINE_TERRAINRENDERER_HPP
 
 #include <Minimal-Engine/Renderables/Lights/LightCollection.hpp>
-#include <Minimal-Engine/Renderables/StaticObjects/Terrain.hpp>
 
 #include "EntityRenderer.hpp"
+
+class TerrainGrid;
 
 /** Renderer specially for Terrains
  *
@@ -17,7 +18,7 @@ class TerrainRenderer : public EntityRenderer {
    public:
     explicit TerrainRenderer(StaticShader *shaderProgram) : EntityRenderer(shaderProgram) {}
 
-    void render(const std::vector<Terrain> &terrains, const LightCollection &lights);
+    void render(const TerrainGrid &terrains, const LightCollection &lights);
 };
 
 #endif  // DAFT_GAMEENGINE_TERRAINRENDERER_HPP

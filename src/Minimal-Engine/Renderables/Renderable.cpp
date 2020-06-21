@@ -3,8 +3,6 @@
 //
 #include "Renderable.hpp"
 
-#include <Minimal-Engine/Loader.hpp>
-
 void Renderable::prepare() const {
     if (!m_visible) return;
     m_mesh.prepare();
@@ -24,7 +22,7 @@ void Renderable::unbind() const {
 void Renderable::toggleVisible() {
     m_visible = !m_visible;
     if (!m_visible) {
-        Loader::deleteMesh(m_mesh);
+        m_mesh.reset();
         m_material.reset();
     } else {
         m_mesh = generateMesh();

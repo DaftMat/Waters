@@ -112,7 +112,7 @@ Mesh Primitives::plane(const HeightMap &hmap, float size, int lod) {
         }
     }
 
-    return Loader::loadMesh(vertices, indices);
+    return Mesh(std::move(vertices), std::move(indices));
 }
 
 Mesh Primitives::cube(int resolution, float size) {
@@ -159,5 +159,5 @@ Mesh Primitives::cube(int resolution, float size) {
         }
     }
 
-    return Loader::loadMesh(vertices, indices);
+    return Mesh(std::move(vertices), std::move(indices));
 }

@@ -15,16 +15,12 @@ void TerrainGrid::addTerrain(int x, int y) {
     Terrain terrain{HeightMap(Noise::generate(), m_fun), m_size, 0};
     terrain.position() = glm::vec3{float(x) * (2.f * m_size), 0.f, float(y) * (2.f * m_size)};
     glm::vec<2, int> pos{x, y};
-    m_terrains.insert(std::make_pair(pos, terrain));
+    m_terrains.insert(std::make_pair(pos, std::move(terrain)));
 }
 
-std::vector<Terrain> TerrainGrid::terrains() {
-    std::vector<Terrain> ret;
-    for (const auto &t : m_terrains) {
-        ret.push_back(t.second);
-    }
-    return ret;
-}
+Terrain &TerrainGrid::terrain(int x, int y) { return m_terrains.at(glm::ivec2{x, y}); }
+
+const Terrain &TerrainGrid::terrain(int x, int y) const { return m_terrains.at(glm::ivec2{x, y}); }
 
 float TerrainGrid::getHeight(float x, float y) const {
     float h = -10000.f;

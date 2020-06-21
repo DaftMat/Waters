@@ -34,6 +34,9 @@ class ENGINE_API Terrain : public Renderable {
      */
     explicit Terrain(const HeightMap &hmap, float size = 10.f, int lod = 0);
 
+    Terrain(Terrain &&) = default;
+    Terrain &operator=(Terrain &&) = default;
+
     [[nodiscard]] glm::mat4 model() const override { return glm::translate(glm::mat4{1.f}, m_position); }
 
     [[nodiscard]] glm::vec3 &position() { return m_position; }

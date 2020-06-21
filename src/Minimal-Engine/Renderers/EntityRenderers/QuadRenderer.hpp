@@ -17,7 +17,7 @@ class QuadRenderer {
 
     void prepare() const;
 
-    void addQuad(const Quad &quad) { m_quads.push_back(quad); }
+    void addQuad(Quad quad) { m_quads.push_back(std::move(quad)); }
 
     Quad &quad(int index) { return m_quads[index]; }
 

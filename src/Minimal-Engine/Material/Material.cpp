@@ -4,7 +4,6 @@
 
 #include "Material.hpp"
 
-#include <Minimal-Engine/Loader.hpp>
 #include <algorithm>
 
 void Material::prepare() const {
@@ -15,74 +14,12 @@ void Material::prepare() const {
     glActiveTexture(GL_TEXTURE0);
 }
 
-void Material::addTexture(Texture texture) { m_textures.push_back(texture); }
-
-void Material::addSetting(std::string name, const glm::vec3 &data) {
-    Setting setting{};
-    setting.type = Setting::Type::VECTOR;
-    setting.name = std::move(name);
-    setting.data.vectorData = data;
-    m_settings.push_back(setting);
-}
-
-void Material::addSetting(std::string name, float data) {
-    Setting setting{};
-    setting.type = Setting::Type::SCALAR;
-    setting.name = std::move(name);
-    setting.data.scalarData = data;
-    m_settings.push_back(setting);
-}
-
-void Material::addSetting(std::string name, bool data) {
-    Setting setting{};
-    setting.type = Setting::Type::BOOL;
-    setting.name = std::move(name);
-    setting.data.boolData = data;
-    m_settings.push_back(setting);
-}
-
-void Material::addSetting(std::string name, int data) {
-    Setting setting{};
-    setting.type = Setting::Type::INT;
-    setting.name = std::move(name);
-    setting.data.intData = data;
-    m_settings.push_back(setting);
-}
+void Material::addTexture(Texture texture) { m_textures.emplace_back(std::move(texture)); }
 
 void Material::deleteTexture(const std::string &name) {
     m_textures.erase(std::remove_if(m_textures.begin(), m_textures.end(),
                                     [name](const Texture &texture) { return texture.name() == name; }),
                      m_textures.end());
-}
-
-void Material::deleteSetting(const std::string &name) {
-    m_settings.erase(std::remove_if(m_settings.begin(), m_settings.end(),
-                                    [name](const Setting &setting) { return setting.name == name; }),
-                     m_settings.end());
-}
-
-void Material::setSetting(const std::string &name, const glm::vec3 &data) {
-    std::find_if(m_settings.begin(), m_settings.end(), [name](const Setting &setting) {
-        return setting.name == name;
-    })->data.vectorData = data;
-}
-
-void Material::setSetting(const std::string &name, float data) {
-    std::find_if(m_settings.begin(), m_settings.end(), [name](const Setting &setting) {
-        return setting.name == name;
-    })->data.scalarData = data;
-}
-
-void Material::setSetting(const std::string &name, bool data) {
-    std::find_if(m_settings.begin(), m_settings.end(), [name](const Setting &setting) {
-        return setting.name == name;
-    })->data.boolData = data;
-}
-
-void Material::setSetting(const std::string &name, int data) {
-    std::find_if(m_settings.begin(), m_settings.end(), [name](const Setting &setting) {
-        return setting.name == name;
-    })->data.intData = data;
 }
 
 Texture &Material::texture(const std::string &name) {
@@ -91,9 +28,6 @@ Texture &Material::texture(const std::string &name) {
 }
 
 void Material::reset() {
-    for (auto &tex : m_textures) {
-        Loader::deleteTexture(tex);
-    }
     m_textures.clear();
     m_settings.clear();
 }

@@ -19,7 +19,7 @@ class Object : public Renderable {
      * @param rot - object rotations.
      * @param scale - object scale.
      */
-    explicit Object(const Mesh &mesh, const glm::vec3 &pos = glm::vec3{0.f}, const glm::vec3 &rot = glm::vec3{0.f},
+    explicit Object(Mesh mesh, const glm::vec3 &pos = glm::vec3{0.f}, const glm::vec3 &rot = glm::vec3{0.f},
                     const glm::vec3 &scale = glm::vec3{1.f});
 
     /** Transformation matrix.

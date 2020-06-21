@@ -47,9 +47,11 @@ class EntityRenderer {
 
     void setShader(const char *vertex, const char *fragment);
 
-   protected:
     void setLights(const LightCollection &lights) const;
 
+    void clearLights() const { m_shaderProgram->clearLights(); }
+
+   protected:
     std::unique_ptr<StaticShader> m_shaderProgram{nullptr};
 };
 

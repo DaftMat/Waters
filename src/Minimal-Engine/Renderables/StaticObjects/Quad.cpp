@@ -3,8 +3,6 @@
 //
 #include "Quad.hpp"
 
-#include <Minimal-Engine/Loader.hpp>
-
 Quad::Quad(float x, float y, float width, float height) {
     std::vector<GLuint> indices{0, 1, 2, 0, 2, 3};
     std::vector<Mesh::Vertex> vertices;
@@ -24,6 +22,6 @@ Quad::Quad(float x, float y, float width, float height) {
     vertex.position = glm::vec3(x, y - height, 0.f);
     vertices.push_back(vertex);
 
-    m_mesh = Loader::loadMesh(vertices, indices);
-    m_material.addTexture(Texture("quadTexture", 0));
+    m_mesh = Mesh(std::move(vertices), std::move(indices));
+    m_material.addTexture(Texture("quadTexture"));
 }

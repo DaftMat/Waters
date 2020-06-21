@@ -4,11 +4,9 @@
 
 #include "Object.hpp"
 
-#include <Minimal-Engine/Loader.hpp>
-
-Object::Object(const Mesh &mesh, const glm::vec3 &pos, const glm::vec3 &rot, const glm::vec3 &scale)
+Object::Object(Mesh mesh, const glm::vec3 &pos, const glm::vec3 &rot, const glm::vec3 &scale)
     : m_position{pos}, m_rotation{rot}, m_scale{scale} {
-    m_mesh = mesh;
+    m_mesh = std::move(mesh);
     m_material.addSetting("hasAlbedoTex", false);
     m_material.addSetting("hasSpecularTex", false);
     m_material.addSetting("albedo", glm::vec3{0.5f});
@@ -28,11 +26,11 @@ glm::mat4 Object::rotation() const {
 }
 
 void Object::addAlbedoTexture(const std::string &texPath) {
-    m_material.addTexture(Loader::loadTexture("albedoTex", texPath));
+    m_material.addTexture(Texture("albedoTex", texPath));
     m_material.setSetting("hasAlbedoTex", true);
 }
 
 void Object::addSpecularTexture(const std::string &texPath) {
-    m_material.addTexture(Loader::loadTexture("specularTex", texPath));
+    m_material.addTexture(Texture("specularTex", texPath));
     m_material.setSetting("hasSpecularTex", true);
 }
