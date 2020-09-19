@@ -1,7 +1,7 @@
 [![Build Status](https://travis-ci.com/DaftMat/Waters.svg?branch=master)](https://travis-ci.com/DaftMat/Waters)
 
 # Waters !
-A minimal rendering engine for waters (and terrains)
+A minimal rendering engine for waters and procedural terrains with perlin noise.
 
 ## List of dependencies:
  - Here's the list of repos you want to install before running this app.
@@ -36,3 +36,5 @@ $ ./waters
 
 ## Using The Engine
 As well, you can inherit from `BaseApplication` and use the engine api you made to build your own windowed abstraction. Follow the guidelines described by this project.
+
+![demo](https://imgur.com/3O9Vhf6.gif)
